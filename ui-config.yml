@@ -26,8 +26,11 @@ tabs:
   - name: OpenScap Report
     url: https://node02-${guid}.${domain}/oscap-reports/ospp/
     external: false
-  - name: Windows
+  - name: Windows RDP
     url: https://windows-ironrdp-${guid}.${domain}/
+    external: false
+  - name: Windows UI
+    url: https://windows-${guid}.${domain}/
     external: false
   - name: ">_ control"
     url: /wetty
