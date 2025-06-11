@@ -334,20 +334,20 @@ tee /tmp/setup.yml << EOF
       controller_password: ansible123!
       validate_certs: false
 
-  - name: (DECISIONS) Create an AAP Credential
-    ansible.eda.credential:
-      name: "AAP"
-      description: "To execute jobs from EDA"
-      inputs:
-        host: "https://control-{{ GUID }}.{{ DOMAIN }}/api/controller/"
-        username: "admin"
-        password: "ansible123!"
-      credential_type_name: "Red Hat Ansible Automation Platform"
-      organization_name: Default
-      controller_host: https://localhost
-      controller_username: admin
-      controller_password: ansible123!
-      validate_certs: false
+  #- name: (DECISIONS) Create an AAP Credential
+  #  ansible.eda.credential:
+  #    name: "AAP"
+  #    description: "To execute jobs from EDA"
+  #    inputs:
+  #      host: "https://control-{{ GUID }}.{{ DOMAIN }}/api/controller/"
+  #      username: "admin"
+  #      password: "ansible123!"
+  #    credential_type_name: "Red Hat Ansible Automation Platform"
+  #    organization_name: Default
+  #    controller_host: https://localhost
+  #    controller_username: admin
+  #    controller_password: ansible123!
+  #    validate_certs: false
 
 ###############TEMPLATES###############
 
