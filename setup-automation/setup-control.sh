@@ -1,7 +1,5 @@
 #!/bin/bash
 
-systemctl stop systemd-tmpfiles-setup.service
-systemctl disable systemd-tmpfiles-setup.service
 
 # Install collection(s)
 ansible-galaxy collection install ansible.eda
@@ -533,4 +531,4 @@ EOF
 # # # execute above playbook
 
 
-ANSIBLE_COLLECTIONS_PATH=/tmp/ansible-automation-platform-containerized-setup/collections/:/home/rhel/.ansible/collections/ansible_collections/:/root/.ansible/collections/ansible_collections/ ansible-playbook -i /tmp/inventory /tmp/setup.yml
+ANSIBLE_COLLECTIONS_PATH=/root/ansible-automation-platform-containerized-setup/collections/:/home/rhel/.ansible/collections/ansible_collections/:/root/.ansible/collections/ansible_collections/ ansible-playbook -i /tmp/inventory /tmp/setup.yml
