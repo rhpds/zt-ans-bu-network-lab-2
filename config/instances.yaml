@@ -65,7 +65,7 @@ containers:
         tls_termination: Edge
 virtualmachines:
   - name: "control"
-    image: "automation-controller-aap-25-c-20241031"
+    image: "aap-25-c-20250611"
     memory: "16G"
     cores: 4
     image_size: "30Gi"
