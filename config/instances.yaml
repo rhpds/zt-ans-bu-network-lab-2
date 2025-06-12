@@ -76,6 +76,14 @@ virtualmachines:
         value: "isolated"
     networks:
       - default
+    userdata: |-
+      #cloud-config
+      user: rhel
+      password: ansible123!
+      chpasswd: { expire: False }
+      runcmd:
+        - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config
+        - systemctl reload sshd
     services:
       - name: control-https
         ports:
