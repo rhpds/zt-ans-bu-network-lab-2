@@ -35,7 +35,7 @@ cat <<EOF | tee /var/www/html/index.html
     </style>
 </head>
 <body>
-    <h1>Nothing to See Here - Not Yet Anyway - Node02</h1>
+    <h1>Waiting for compliance report - Node02</h1>
 </body>
 </html>
 
