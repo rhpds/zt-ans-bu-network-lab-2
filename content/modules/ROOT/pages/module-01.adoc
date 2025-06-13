@@ -30,7 +30,7 @@ Use these credentials to access your Ansible Automation Platform instance:
 === Overview
 You have several Linux servers in your datacenter, and backing up their storage is a common task. With Ansible, you can automate multiple snapshot mechanisms whether your systems are in the cloud, VMs, or bare metal.
 
-=== Step 1: Check Existing Backups
+== Step 1: Check Existing Backups
 
 .📋 Detailed Instructions
 ====
@@ -47,7 +47,7 @@ TIP: You can launch templates quickly by clicking on the 🚀 rocket icon.
 .Backup Check Results
 image::backupcheck.png[Initial backup check showing no backups available]
 
-Step 2: Create XFS Backups
+== Step 2: Create XFS Backups
 
 [%collapsible]
 .📋 Detailed Instructions
