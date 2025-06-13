@@ -24,7 +24,8 @@ Use these credentials to access your Ansible Automation Platform:
 | admin    | ansible123!
 |===
 
-== Lab Exercise: Creating Windows Update Reports
+[%collapsible]
+== Lab Exercise 01: Creating Windows Update Reports
 
 === Overview
 We'll gather all the patch details and create a comprehensive report using Jinja templates. The report will even be published as a web page on our Windows host for easy access by the Windows team.
@@ -37,7 +38,6 @@ This automated approach provides several key benefits:
 
 === Step 1: Access the Windows Update Template
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to *Automation Execution* → *Templates*
@@ -53,7 +53,6 @@ image::update-template.png[Windows Update template interface]
 
 === Step 2: Create Survey Configuration
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to the *Survey* tab
@@ -83,7 +82,6 @@ image::survey.png[Survey configuration screen]
 
 === Step 3: Enable and Configure Survey
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Click *Create survey question*
@@ -99,7 +97,6 @@ image::survey-enable.png[Survey enablement interface]
 
 === Step 4: Execute the Template
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Launch the template by clicking the rocket 🚀 icon
@@ -112,7 +109,6 @@ The scan process typically takes 2-3 minutes depending on the number of availabl
 
 === Step 5: Review the Patch Report
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Once the template completes, navigate to the *Windows Report* tab
@@ -124,30 +120,6 @@ The report is automatically published to the Windows server's IIS web service, m
 
 .Windows Update Report
 image::update-report.png[Generated Windows update report]
-
-[%collapsible]
-.📊 Understanding the Report
-====
-The comprehensive report displays the following information for each update:
-
-* **Update Title** - Descriptive name and summary of the update
-* **Severity** - Microsoft's assigned severity level:
-  ** 🔴 **Critical** - Immediate installation recommended
-  ** 🟠 **Important** - Install during next maintenance window
-  ** 🟡 **Moderate** - Plan for upcoming maintenance cycle
-  ** 🟢 **Low** - Install when convenient
-* **KB Number** - Microsoft Knowledge Base article reference for detailed information
-* **Size** - Download size in MB for bandwidth planning
-* **Installation Status** - Current state (Available, Downloaded, Installed)
-* **Restart Required** - Whether system reboot is needed post-installation
-* **Categories** - Update classification (Security, Critical, etc.)
-
-=== Report Analysis Tips
-* **Prioritize by Severity** - Focus on Critical and Important updates first
-* **Plan Maintenance Windows** - Group updates requiring restarts
-* **Review Dependencies** - Some updates may require others to be installed first
-* **Check Compatibility** - Verify updates are compatible with current applications
-====
 
 == Verification: Scheduled Backup Jobs
 
