@@ -1,281 +1,145 @@
 :notoc:
 
-<div align="center">
+# 🎯 Ansible Automation Platform - Backup and Snapshot Lab Guide
 
-# 🚀 Ansible Automation Platform
-## 🎯 Advanced Backup & Snapshot Mastery Lab
-
-*Welcome to Your Automation Journey - Where Innovation Meets Infrastructure*
+Welcome to the team! You're about to embark on your automation journey with Ansible. This lab focuses on safe, read-only automation tasks that will help you build confidence without making high-risk changes.
 
 ---
 
-**💫 Transform Your Skills | 🔧 Automate with Confidence | 🌟 Master Multi-Platform Operations**
+## 🔐 Lab Environment Credentials
 
-</div>
+**Ansible Automation Platform Access:**
 
----
+| Username | Password    |
+|----------|-------------|
+| admin    | ansible123! |
 
-## 🌟 Welcome, Future Automation Expert!
-
-> 🎊 **Congratulations on joining the team!** You're about to embark on an exciting journey into the world of enterprise automation. This immersive lab experience is carefully designed to build your confidence through safe, read-only operations that deliver real-world value.
-
-### 🚀 **Why This Lab Matters**
-- 🛡️ **Risk-Free Learning**: Start with safe, introspective automation
-- 📈 **Confidence Building**: Progress from observer to operator
-- 🔄 **Real-World Impact**: Automate actual backup and snapshot processes
-- 🎯 **Career Advancement**: Master skills that matter in enterprise environments
-
----
-
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin: 20px 0;">
-
-## 🔐 Your Mission Control Center
-
-### 🎮 **Ansible Automation Platform Access**
-
-| 🔑 Credential | 📋 Value |
-|---------------|----------|
-| **Username** | `admin` |
-| **Password** | `ansible123!` |
-
-### 🌐 **Your Lab Universe**
 **DNS Domain:** `[[ Instruqt-Var key="DOMAIN" hostname="control" ]]`
 
-### 🖥️ **Server Fleet Status**
+**Server Inventory:**
 
-| 🏷️ Server Type | 🌐 Fully Qualified Domain Name |
-|----------------|--------------------------------|
-| 🪟 **Windows Server** | `windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]` |
-| 🐧 **Node01** | `node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]` |
-| 🐧 **Node02** | `node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]` |
-| 🐧 **Node03** | `node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]` |
-
-</div>
+| Server         | FQDN                                                    |
+|----------------|---------------------------------------------------------|
+| Windows Server | windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]] |
+| Node01         | node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]  |
+| Node02         | node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]  |
+| Node03         | node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]  |
 
 ---
 
-<div style="border-left: 4px solid #4CAF50; padding: 15px; background-color: #f8fff8; margin: 20px 0;">
+## 💻 Exercise 1: Backing up Linux File Systems
 
-# 🐧 **MISSION 1: Linux File System Guardian**
-## *Master the Art of XFS Backup Automation*
+### 🎯 Objective
+Learn to automate backup processes for Linux servers using XFS snapshots through Ansible Automation Platform.
 
-### 🎯 **Mission Objective**
-Transform manual backup processes into elegant, automated workflows that protect your critical Linux infrastructure with military precision.
+### ****Step 1: Initial Backup Assessment****
 
-</div>
+1. Navigate to the **aap** tab in your lab environment
+2. Login using the credentials: `admin/ansible123!`
+3. Click on the **Menu** dropdown icon (☰)
+4. Follow the navigation path: **Automation Execution** → **Templates**
+5. Launch the template **Check RHEL Backups** by clicking the 🚀 icon
 
-## 🔍 **Phase 1: Reconnaissance & Assessment**
+> 📝 **NOTE:** You should see that no backups are currently available on the system.
 
-> 💡 **Pro Tip**: Every great automation journey begins with understanding the current state!
-
-### ⚡ **Action Steps:**
-
-**🎪 Step 1: Enter the Automation Arena**
-1. 🖱️ Navigate to the **aap** tab (your command center)
-2. 🔐 Authenticate with: `admin` / `ansible123!`
-3. 🍔 Click the **Menu** hamburger icon (☰)
-4. 🧭 Navigate: **Automation Execution** → **Templates**
-5. 🚀 Launch **Check RHEL Backups** (click the rocket 🚀 icon)
-
-> 📊 **Expected Result**: You'll discover the current backup landscape - likely empty, waiting for your automation magic!
-
-<div align="center">
-
-.🔍 Initial Backup Assessment
+.Backup Check
 image::/backupcheck.png[]
 
-*Your first glimpse into the system's backup status*
+### ****Step 2: Execute XFS Backup****
 
-</div>
+1. Return to **Automation Execution** → **Templates**
+2. Launch the **Server Backup - XFS/RHEL** template
+3. This will create XFS dumps of the file system across all three RHEL nodes
 
----
+> ⚠️ **IMPORTANT:** This process takes 6-7 minutes to complete. Jobs can run in parallel, so feel free to continue with other tasks and return later.
 
-## 🔥 **Phase 2: Backup Arsenal Deployment**
-
-### ⚡ **Action Steps:**
-
-**🎯 Step 2: Unleash the XFS Backup Engine**
-1. 🔄 Return to **Automation Execution** → **Templates**
-2. 🚀 Launch **Server Backup - XFS/RHEL**
-3. 🎬 Watch as automation creates XFS dumps across your entire server fleet
-
-<div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 15px 0;">
-
-⏰ **PATIENCE PAYS OFF:** This high-performance operation takes 6-7 minutes to complete. The beauty of automation? Jobs run in parallel! Feel free to explore other sections while your backup army works in the background.
-
-</div>
-
-<div align="center">
-
-.🔥 XFS Backup Engine in Action
+.XFS Backup
 image::xfsbackup.png[XFS]
 
-*Witness the power of automated backup orchestration*
+### ****Step 3: Verify Backup Completion****
 
-</div>
+1. Once the backup job completes, launch **Check RHEL Backups** again
+2. Confirm that backups are now available on each server
 
----
-
-## ✅ **Phase 3: Victory Verification**
-
-**🎊 Step 3: Confirm Your Automation Success**
-1. 🔍 Re-launch **Check RHEL Backups**
-2. 🎉 Marvel at your newly created backup infrastructure
-3. 🏆 Celebrate your first automation victory!
-
-<div align="center">
-
-.🎯 Mission Accomplished - Backups Verified
+.After Backup Check
 image::afterbackupcheck.png[BackupCheck2]
 
-*The sweet sight of successful automation*
-
-</div>
-
-> 🏆 **ACHIEVEMENT UNLOCKED**: Linux Backup Automation Master!
+> ✅ **SUCCESS:** You have successfully automated the backup process for your Linux file systems!
 
 ---
 
-<div style="border-left: 4px solid #2196F3; padding: 15px; background-color: #f0f8ff; margin: 20px 0;">
+## 🪟 Exercise 2: Windows VSS Snapshots
 
-# 🪟 **MISSION 2: Windows Snapshot Virtuoso**
-## *Harness the Power of Volume Shadow Copy Service*
+### 🎯 Objective
+Automate Windows Volume Shadow Copy Service (VSS) snapshots to enable database backups without file locking.
 
-### 🎯 **Mission Objective**
-Deploy enterprise-grade Windows VSS automation that enables zero-downtime database backups through intelligent snapshot orchestration.
+### ****Step 1: Create VSS Snapshot****
 
-</div>
+Windows systems in your environment already have third-party backup tools, but VSS snapshots are essential for database backups as they allow backup operations without interrupting active files.
 
-## 🌟 **The Strategic Advantage**
+1. Navigate to **Automation Execution** → **Templates**
+2. Launch **Server Snapshot - VSS/Windows**
 
-> 🎯 **Why VSS Matters**: Your Windows environment already has robust third-party backup solutions, but VSS snapshots are your secret weapon for database backups. They enable backup operations without file locking or service interruption - pure genius!
-
----
-
-## 🚀 **Phase 1: Snapshot Creation Mastery**
-
-### ⚡ **Action Steps:**
-
-**💎 Step 1: Deploy VSS Snapshot Technology**
-1. 🧭 Navigate: **Automation Execution** → **Templates**
-2. 🚀 Launch **Server Snapshot - VSS/Windows**
-3. 🎭 Watch Windows automation work its magic
-
-<div align="center">
-
-.💎 VSS Snapshot Engine Deployment
 image::vss-snap.png[WINDOWS_BK]
 
-*Professional-grade Windows automation in motion*
+### ****Step 2: Verify VSS Snapshot****
 
-</div>
+1. Navigate to **Automation Execution** → **Templates**
+2. Execute **Check Windows Backups** to confirm the VSS snapshot was created
 
----
-
-## 🔍 **Phase 2: Snapshot Intelligence Verification**
-
-**🎪 Step 2: Confirm VSS Success**
-1. 🔄 Navigate: **Automation Execution** → **Templates**
-2. 🚀 Execute **Check Windows Backups**
-3. 🎉 Witness your VSS snapshot success story
-
-<div align="center">
-
-.✨ VSS Snapshot Verification Success
 image::vss-snap-check.png[WINDOWS_CK]
 
-*The proof of your Windows automation prowess*
+> ✅ **SUCCESS:** VSS snapshot is now active and available!
 
-</div>
+### ****Step 3: Configure Automated Scheduling****
 
-> 🎊 **BREAKTHROUGH ACHIEVED**: VSS snapshots are live and operational!
+Let's set up recurring snapshots to eliminate manual intervention:
 
----
+1. Navigate to **Automation Execution** → **Templates**
+2. Select **Server Backup - VSS/Windows**
+3. Click on the **Schedules** tab
+4. Click **Create schedule**
 
-## 🤖 **Phase 3: Automation Orchestration Supreme**
-
-Transform manual processes into self-sustaining automation workflows!
-
-**🎯 Step 3: Configure Intelligent Scheduling**
-
-### 🛠️ **Automation Configuration:**
-
-1. 🧭 Navigate: **Automation Execution** → **Templates**
-2. 🎯 Select **Server Backup - VSS/Windows**
-3. 📅 Click the **Schedules** tab
-4. ➕ Click **Create schedule**
-
-<div align="center">
-
-.🎪 Schedule Creation Interface
 image::win-shed.png[WINDOWS_SC]
 
-*Your gateway to automation nirvana*
+**Schedule Configuration:**
+- **Schedule Name:** `5 Min Snappy`
+- **Description:** `Automated VSS Snaps`
+- **Start date/time:** Leave as default
+- **Time Zone:** Leave as default
 
-</div>
+**Frequency Settings:**
+1. Click **Next**
+2. Set **Frequency** to **Minutely**
+3. Increase **Interval** to **5**
+4. Select **Save rule** and click **Next**
+5. Skip exceptions (click **Next**)
+6. Click **Finish**
 
-### 🎨 **Schedule Masterpiece Configuration:**
-
-<div style="background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%); padding: 20px; border-radius: 15px; color: white; margin: 20px 0;">
-
-#### 📋 **Schedule Blueprint**
-- 🏷️ **Schedule Name:** `5 Min Snappy`
-- 📝 **Description:** `Automated VSS Snaps`
-- 📅 **Start Date/Time:** Keep default settings
-- 🌍 **Time Zone:** Keep default settings
-
-#### ⚙️ **Frequency Precision**
-1. 👉 Click **Next**
-2. 🔄 Set **Frequency** to **Minutely**
-3. ⏱️ Increase **Interval** to **5**
-4. 💾 Select **Save rule** → **Next**
-5. ⏭️ Skip exceptions (click **Next**)
-6. 🎯 Click **Finish**
-
-</div>
-
-<div align="center">
-
-.🎨 Schedule Configuration Masterpiece
 image::shed-details.png[WINDOWS_details]
 
-*The art of perfect automation timing*
-
-</div>
-
-> 🌟 **AUTOMATION NIRVANA ACHIEVED**: Your Windows systems now feature self-sustaining VSS snapshots every 5 minutes!
+> ✨ **AUTOMATION ACHIEVED:** Your Windows systems now have automated VSS snapshots running every 5 minutes!
 
 ---
 
-<div style="border-left: 4px solid #FF9800; padding: 15px; background-color: #fff8f0; margin: 20px 0;">
+## 📋 Code Review: XFS Backup Implementation
 
-# 👨‍💻 **TECHNICAL DEEP DIVE**
-## *The Code Behind the Magic*
-
-### 🧬 **XFS Backup DNA Analysis**
-
-For the technically curious, here's the elegant Ansible code orchestrating your XFS backup automation:
-
-</div>
+For those interested in the underlying automation, here's the key Ansible code powering the XFS backup process:
 
 ```yaml
-# 🎯 The XFS Backup Automation Masterpiece
 tasks:
-  # 🔍 Intelligent Package Management
   - name: Check if xfsdump is installed
     ansible.builtin.yum:
       name: xfsdump
       state: present
     when: ansible_facts.os_family == "RedHat"
 
-  # 📁 Directory Architecture Assurance
   - name: Ensure the backup directory exists
     ansible.builtin.file:
       path: "{{ backup_file | dirname }}"
       state: directory
       mode: '0755'
 
-  # 🚀 The Main Event - XFS Dump Execution
   - name: Perform xfsdump backup
     ansible.builtin.command:
       cmd: >
@@ -284,78 +148,41 @@ tasks:
     register: backup_result
     ignore_errors: no
 
-  # ✅ Success Verification & Celebration
   - name: Verify xfsdump success
     ansible.builtin.debug:
       msg: "Backup completed successfully: {{ backup_result.stdout }}"
 ```
 
-> 💡 **Code Insight**: This automation handles package verification, directory creation, backup execution, and success validation - all the hallmarks of professional-grade infrastructure code!
+---
+
+## 🎉 Lab Summary
+
+### What You've Accomplished:
+
+✅ **Linux File System Backups**
+- Automated XFS dump creation across multiple RHEL servers
+- Implemented backup verification processes
+- Learned safe, read-only automation techniques
+
+✅ **Windows VSS Snapshots**
+- Created Volume Shadow Copy Service snapshots
+- Verified snapshot functionality
+- Configured automated recurring snapshots
+
+✅ **Automation Skills Developed**
+- Template execution and monitoring
+- Job scheduling and automation
+- Multi-platform backup strategies
+- Ansible Automation Platform navigation
+
+### Key Benefits Achieved:
+- **Risk Mitigation:** Started with safe, read-only operations
+- **Confidence Building:** Successful automation of critical backup processes
+- **Operational Efficiency:** Eliminated manual backup procedures
+- **Cross-Platform Expertise:** Worked with both Linux and Windows systems
+
+> 💡 **TIP:** Use these foundational skills to expand into more complex automation scenarios as your confidence grows!
 
 ---
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 15px; color: white; margin: 30px 0;">
-
-# 🏆 **MISSION ACCOMPLISHED - YOUR AUTOMATION LEGACY**
-
-## 🎖️ **Achievements Unlocked:**
-
-### 🐧 **Linux Mastery Badge**
-- ✅ **Multi-Server XFS Automation**: Orchestrated backups across entire RHEL fleet
-- ✅ **Verification Protocols**: Implemented backup validation workflows  
-- ✅ **Risk-Free Operations**: Mastered safe automation fundamentals
-
-### 🪟 **Windows Virtuoso Medal**
-- ✅ **VSS Snapshot Mastery**: Deployed enterprise-grade shadow copy automation
-- ✅ **Zero-Downtime Backups**: Enabled database-friendly backup strategies
-- ✅ **Intelligent Scheduling**: Created self-sustaining automation workflows
-
-### 🚀 **Professional Skills Constellation**
-- ✅ **Template Execution Mastery**: Navigate and operate Ansible Automation Platform
-- ✅ **Job Orchestration**: Monitor and manage parallel automation workflows
-- ✅ **Cross-Platform Expertise**: Command both Linux and Windows automation
-- ✅ **Schedule Architecture**: Design recurring automation patterns
-
-</div>
-
----
-
-<div style="background-color: #e8f5e8; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 20px 0;">
-
-## 🌟 **The Transformation Impact**
-
-### 🎯 **Before Your Automation Journey:**
-- 📝 Manual backup procedures consuming valuable time
-- 🎲 Inconsistent backup schedules and human error risks  
-- 😰 Anxiety about system reliability and data protection
-- 🔄 Repetitive tasks stealing focus from strategic work
-
-### 🚀 **After Your Automation Mastery:**
-- 🤖 **Operational Efficiency**: Eliminated manual backup procedures forever
-- 🛡️ **Risk Mitigation**: Built confidence through safe, proven automation
-- 📊 **Reliability Assurance**: Consistent, scheduled backup operations
-- 🎯 **Strategic Focus**: Freedom to tackle higher-value challenges
-
-</div>
-
----
-
-<div align="center" style="background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%); padding: 25px; border-radius: 20px; color: white; margin: 30px 0;">
-
-## 🚀 **Your Automation Journey Continues...**
-
-### 💫 **Next Level Challenges Await:**
-
-🎯 **Expand Your Automation Empire**: Use these foundational skills to tackle more complex infrastructure challenges
-
-🌟 **Explore Advanced Templates**: Discover the full power of Ansible Automation Platform
-
-🔥 **Share Your Success**: Inspire teammates with your newfound automation expertise
-
-### 🎊 **The Sky's the Limit!**
-
-*You've proven that automation isn't just about technology - it's about transformation, efficiency, and the confidence to innovate fearlessly.*
-
-**Keep automating, keep innovating, keep achieving! 🌟**
-
-</div>
+**🚀 Next Steps:** Continue exploring Ansible Automation Platform templates and consider automating other routine maintenance tasks in your environment.
