@@ -1,6 +1,4 @@
 = Ansible Automation Platform - System Backup Lab
-:toc: 
-:toclevels: 3
 :icons: font
 :numbered:
 
