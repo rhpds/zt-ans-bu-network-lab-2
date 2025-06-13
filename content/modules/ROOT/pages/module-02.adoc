@@ -1,254 +1,285 @@
-= Infrastructure Data Gathering with Ansible
-:toc:
-:toc-placement: preamble
-:icons: font
+# 📊 Ansible System Data & Compliance Lab Guide
 
-== Introduction 📊
+---
 
-Sometimes you just need data about your systems, and Ansible is perfect for this task! While Ansible can automate almost everything, one of the best starting points is gathering infrastructure data.
+## 🎯 Infrastructure Data Gathering with Ansible
 
-You know you have servers, networks, and other infrastructure components, but auditing or gathering all the system data can be a massive exercise. Fortunately, you can use Ansible at scale to make this process efficient and automated.
+**Welcome to Infrastructure Intelligence!**
 
+Sometimes you just need data about your systems, and you can get this data with Ansible! Ansible can automate almost everything but one of the best tasks to start on is the gathering of infrastructure data. You know you have servers, networks etc but trying to audit or gather all the system data can be a big exercise. Luckily, you can use Ansible at scale for this.
 
-== Lab Environment Setup
+> 💡 **TIP:** Infrastructure data gathering is one of the safest ways to start your automation journey - it's read-only and provides immediate value!
 
+---
 
-=== Credentials
-Use these credentials to access your Ansible Automation Platform:
+## 🔐 Lab Environment Credentials
 
-[cols="1,1", options="header"]
-|===
-| Username | Password
-| admin    | ansible123!
-|===
+### **Ansible Automation Platform Access**
 
+| Username | Password |
+|----------|----------|
+| **admin** | **ansible123!** |
 
 
-[%collapsible]
-== Lab Exercise 1: Discovering Server Information
+## ☑️ Exercise 1: Tell me about my servers
 
+### 🎯 **Objective**
+Learn how to gather detailed system information using Ansible's setup module and ad-hoc commands.
 
-=== Overview
-Let's start by gathering detailed information about our servers using Ansible's built-in fact-gathering capabilities.
+### **Step 1: Access Inventory Management**
 
+1. Navigate to your lab **`aap`** tab and login
 
-=== Step 1: Access Your Inventory
+2. Navigate to **Automation Execution** → **Infrastructure** → **Inventories**
+   > 📝 **NOTE:** This is where we keep track of the systems we automate - you will see a few inventories already built for you
 
-. Navigate to your lab `aap` tab and login with the credentials above
-. Navigate to *Automation Execution* → *Infrastructure* → *Inventories*
-+
-NOTE: This is where we track all the systems we automate. You'll see several inventories already configured for you.
+3. Select the **Video Platform Inventory**
 
-. Select the *Video Platform Inventory*
-. Click on the *Hosts* tab
+4. Select the **Hosts** tab
 
-.Node Setup View
-image::node01-setup.png[Initial node setup interface]
+.Node01
+image::node01-setup.png[]
 
+### **Step 2: Execute Ad-hoc System Facts Collection**
 
-=== Step 2: Run Ad-Hoc Commands for System Facts
+We are going to use the Ansible Automation Platform's ability to run ad-hoc commands to gather system facts or system data.
 
-We'll use Ansible Automation Platform's ability to run ad-hoc commands to gather system facts and data.
+1. Select the host: **`node01`**
 
-. Select the host: `node01`
-. Click on *Run command*
-. From the module dropdown list, select the *Setup* module
-. Click *Next*
+2. Click on **Run command**
 
-.Setup Module Selection
-image::setup.png[Setup module configuration]
+3. You now have prompts for what command you want to run against this host
 
+4. Select the **Setup** module from the module dropdown list
 
-=== Step 3: Configure Execution Environment
+5. Click **Next**
 
-. Select the *Default execution environment*
-. Click *Next*
+.Setup
+iamge::setup.png[]
 
-TIP: In Ansible Automation Platform, we use Execution Environments to launch templates and playbooks. This provides consistent, containerized environments for our automation.
+### **Step 3: Configure Execution Environment**
 
+1. We need to pick an execution environment to run this module
+   > 📝 **NOTE:** In the Ansible Automation Platform, we use Execution Environments to launch templates/playbooks
 
-=== Step 4: Choose Credentials
+2. Select the **Default execution environment**
 
-. Select the *Application Nodes* credential
-. Click *Next*
-. Click *Finish*
+3. Click **Next**
 
+### **Step 4: Set Credentials and Execute**
 
-=== Step 5: Review System Facts
+1. Choose the credentials for the target host interaction
 
-Once the command executes, you'll see comprehensive system facts displayed.
+2. Select the **Application Nodes** credential
 
-.System Facts Output
-image::setup-output.png[Complete system facts output]
+3. Click **Next**
 
-This output contains all the information that Ansible can gather from the system, including:
+4. Click **Finish**
 
-* Hardware specifications
-* Operating system details
-* Network configuration
-* Storage information
-* And much more!
+### **Step 5: Review System Facts**
 
-[%collapsible]
-== Lab Exercise 2: Scaling Up - Infrastructure Reports
+Once the command executes, you will be presented with comprehensive system facts.
 
+.Output
+image::setup-output.png[]
 
-=== Overview
-We need infrastructure awareness across our entire environment! With Ansible, creating dynamic reports based on facts and tasks is straightforward. Let's create comprehensive infrastructure reports.
+> ✨ **Amazing!** This is all the information that Ansible can gather from the system automatically!
 
+---
 
-=== Step 1: Generate Application Server Report
+## ☑️ Exercise 2: More info, more scale?
 
-. Navigate to *Automation Execution* → *Templates*
-. Execute the *Application Server Report* template
-. When prompted with options, select *All*
+### 🎯 **Objective**
+Generate dynamic infrastructure reports using Ansible templates and system facts at scale.
 
+**We need infrastructure awareness!** And with Ansible it's super easy. We can use Ansible and Jinja templates to create dynamic reports based on facts and Ansible tasks. Let's dive in!
 
-=== Step 2: View the Generated Report
+### **Step 1: Generate Application Server Report**
 
-. Once the template completes, navigate to the *Report Server* tab
-. Refresh the page to see the generated report
+1. Navigate to **Automation Execution** → **Templates**
 
-.Server Report Overview
-image::srv-report.png[Comprehensive server report]
+2. Execute **Application Server Report**
 
-Notice that the report includes backup information as well!
+3. This template will prompt you with a few options - click **All**
 
-.Backup Data Integration
-image::backup-data.png[Backup data within the report]
+### **Step 2: View Generated Report**
 
+1. Once completed, navigate to the **Report Server** tab
 
-=== Step 3: Create Custom Reports
+2. Refresh the page to see the report
 
-You can re-run the report template and choose different options to create reports based on specific criteria:
+.Report
+image::srv-report.png[]
 
-* Filter by server type
-* Focus on specific metrics
-* Generate reports for particular time periods
-* Create targeted reports for different teams
+> 🎉 **Excellent!** Notice we also have the backups reported in this report too!
 
-[%collapsible]
-== Lab Exercise 3: Security Compliance Reporting
+.Backup
+images::backup-data.png[]
 
-=== Overview
-Reports are valuable for operations teams, but InfoSec teams love them even more! Let's run an OpenSCAP compliance report to satisfy security requirements.
+### **Step 3: Customize Report Options**
 
-Security has requested a compliance report for `Node02`. Let's generate this critical security documentation.
+> 💡 **TIP:** You can re-run the report template and choose other options if you want to create other reports for specific criteria.
 
-=== Step 1: Run OpenSCAP Compliance Scan
+---
 
-. Navigate to *Automation Execution* → *Templates*
-. Execute the *OpenSCAP Report* template
-. Wait for the job to complete
+## ☑️ Exercise 3: Is our server compliant?
 
-=== Step 2: Review Compliance Results
+### 🎯 **Objective**
+Execute OpenSCAP compliance scanning and generate security compliance reports for infrastructure audit purposes.
 
-. Once completed, navigate to the *Compliance Report* tab
-. View the generated compliance folder
+**We love reports!** But do you know who else loves reports? **InfoSec!!** We can run an OpenSCAP compliance report as we have that template available to us! Security has asked for the compliance report for **Node02** so let's have a look!
 
-.Compliance Report Folder
-image::compliance_report_folder.png[Compliance report folder structure]
+### **Step 1: Execute OpenSCAP Compliance Scan**
 
-=== Step 3: Analyze Compliance Details
+1. Navigate to **Automation Execution** → **Templates**
 
-Click on the report to view detailed compliance results:
+2. Execute **OpenSCAP Report**
 
-.Detailed Compliance Report
-image::compliance_report.png[Detailed compliance scan results]
+3. Wait for the job to complete
 
-The report will show:
+### **Step 2: Access Compliance Results**
 
-* ✅ **Passed** - Compliant controls
-* ⚠️ **Failed** - Non-compliant controls requiring attention
-* ℹ️ **Informational** - Additional security information
-* 🔍 **Manual** - Items requiring manual verification
+1. Once the job is completed, navigate to the **Compliance Report** tab
 
-[%collapsible]
-== Code Snippets
+.Compliance
+image::compliance_report_folder.png[]
 
-=== OpenSCAP Automation Implementation
+### **Step 3: Review Detailed Compliance Data**
 
-Here's the key Ansible code used for OpenSCAP compliance scanning:
+1. Click on the report to view the detailed results
 
-[source,yaml]
-----
+.ComReport
+image::compliance_report.png[]
+
+> 🔒 **Security Achievement Unlocked!** You now have comprehensive compliance visibility across your infrastructure!
+
+---
+
+## 💻 Code Snippets for Review
+
+### 🔍 **OpenSCAP Automation Code**
+
+Here's the key Ansible code for automating OpenSCAP compliance scanning:
+
+```yaml
 tasks:
-  - name: Check if the system is RHEL 8
-    ansible.builtin.debug:
-      msg: "This playbook is not compatible with {{ inventory_hostname }} (not RHEL 8)"
-    when: ansible_distribution != "RedHat" or ansible_distribution_major_version != "8"
-    failed_when: false
 
-  - name: Run compliance tasks on RHEL 8 systems only
-    when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-    block:
-      - name: Get our facts straight
-        ansible.builtin.set_fact:
-          _profile: '{{ compliance_profile | replace("pci_dss", "pci-dss") }}'
-          _report_dir: /tmp/oscap-reports
+- name: Check if the system is RHEL 8
+  ansible.builtin.debug:
+    msg: "This playbook is not compatible with {{ inventory_hostname }} (not RHEL 8)"
+  when: ansible_distribution != "RedHat" or ansible_distribution_major_version != "8"
+  failed_when: false
 
-      - name: Ensure OpenSCAP tools are installed
-        ansible.builtin.dnf:
-          name: '{{ openscap_packages }}'
-          state: present
+- name: Run compliance tasks on RHEL 8 systems only
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+  block:
+    - name: Get our facts straight
+      ansible.builtin.set_fact:
+        _profile: '{{ compliance_profile | replace("pci_dss", "pci-dss") }}'
+        _report_dir: /tmp/oscap-reports
 
-      - name: Configure httpd
-        when: use_httpd | bool
-        block:
-          - name: Install httpd
-            ansible.builtin.dnf:
-              name: httpd
-              state: present
-            notify: Restart httpd
+    - name: Ensure OpenSCAP tools are installed
+      ansible.builtin.dnf:
+        name: '{{ openscap_packages }}'
+        state: present
 
-          - name: Override report directory
-            ansible.builtin.set_fact:
-              _report_dir: /var/www/html/oscap-reports
+    - name: Configure httpd
+      when: use_httpd | bool
+      block:
+        - name: Install httpd
+          ansible.builtin.dnf:
+            name: httpd
+            state: present
+          notify: Restart httpd
 
-          - name: Gather service facts
-            ansible.builtin.service_facts:
+        - name: Override report directory
+          ansible.builtin.set_fact:
+            _report_dir: /var/www/html/oscap-reports
 
-          - name: Enable firewall http service
-            ansible.posix.firewalld:
-              service: http
-              state: enabled
-              immediate: true
-              permanent: true
-            when: "'firewalld.service' in ansible_facts.services"
+        - name: Gather service facts
+          ansible.builtin.service_facts:
 
-          - name: Disable httpd welcome page
-            ansible.builtin.file:
-              path: /etc/httpd/conf.d/welcome.conf
-              state: absent
-            notify: Restart httpd
+        - name: Enable firewall http service
+          ansible.posix.firewalld:
+            service: http
+            state: enabled
+            immediate: true
+            permanent: true
+          when: "'firewalld.service' in ansible_facts.services"
 
-      - name: Create report on Report Server
-        block:
-          - name: Ensure report directory exists
-            ansible.builtin.file:
-              path: '{{ _report_dir }}/{{ _profile }}'
-              state: directory
-              owner: root
-              group: root
-              mode: 0755
+        - name: Disable httpd welcome page
+          ansible.builtin.file:
+            path: /etc/httpd/conf.d/welcome.conf
+            state: absent
+          notify: Restart httpd
 
-          - name: Set report name
-            ansible.builtin.set_fact:
-              _report: '{{ _report_dir }}/{{ _profile }}/report-{{ inventory_hostname }}-{{ ansible_date_time.iso8601 }}.html'
+    - name: Create report on Report Server
+      block:
+        - name: Ensure report directory exists
+          ansible.builtin.file:
+            path: '{{ _report_dir }}/{{ _profile }}'
+            state: directory
+            owner: root
+            group: root
+            mode: 0755
 
-          - name: Generate compliance report
-            ansible.builtin.command: >-
-              oscap xccdf eval --profile {{ _profile }} --report {{ _report }}
-              /usr/share/xml/scap/ssg/content/ssg-rhel{{ ansible_distribution_major_version }}-ds.xml
-            args:
-              creates: '{{ _report }}'
-            register: _oscap
-            failed_when: _oscap.rc not in [0, 2]
+        - name: Set report name
+          ansible.builtin.set_fact:
+            _report: '{{ _report_dir }}/{{ _profile }}/report-{{ inventory_hostname }}-{{ ansible_date_time.iso8601 }}.html'
 
-          - name: Set report permissions
-            ansible.builtin.file:
-              path: '{{ _report }}'
-              owner: root
-              group: root
-              mode: 0644
-----
+        - name: Generate compliance report
+          ansible.builtin.command: >-
+            oscap xccdf eval --profile {{ _profile }} --report {{ _report }}
+            /usr/share/xml/scap/ssg/content/ssg-rhel{{ ansible_distribution_major_version }}-ds.xml
+          args:
+            creates: '{{ _report }}'
+          register: _oscap
+          failed_when: _oscap.rc not in [0, 2]
+
+        - name: Set report permissions
+          ansible.builtin.file:
+            path: '{{ _report }}'
+            owner: root
+            group: root
+            mode: 0644
+```
+
+> 📝 **NOTE:** This comprehensive code demonstrates advanced Ansible techniques including conditional logic, block structures, and security compliance automation.
+
+---
+
+## 🎉 Lab Summary & Completion Checklist
+
+### ✅ **What You've Accomplished**
+
+- ✅ **System Facts Collection:** Mastered ad-hoc command execution for gathering detailed system information
+- ✅ **Inventory Management:** Learned to navigate and manage Ansible inventories effectively
+- ✅ **Dynamic Reporting:** Created comprehensive infrastructure reports using Jinja templates
+- ✅ **Compliance Scanning:** Implemented OpenSCAP security compliance reporting
+- ✅ **Execution Environments:** Understood how to leverage execution environments for different tasks
+- ✅ **Credential Management:** Applied proper credential selection for secure automation
+
+### 🚀 **Key Learning Outcomes**
+
+1. **Infrastructure Intelligence:** Gained ability to automatically collect and analyze system data at scale
+2. **Ad-hoc Operations:** Learned to execute immediate commands across multiple systems simultaneously  
+3. **Report Generation:** Developed skills in creating dynamic, data-driven infrastructure reports
+4. **Security Compliance:** Implemented automated security scanning and compliance reporting
+5. **Scalable Automation:** Experienced how Ansible handles multiple systems effortlessly
+
+### 📊 **Business Value Delivered**
+
+> 💡 **Impact:** You can now provide instant infrastructure visibility, security compliance reporting, and system auditing capabilities that would traditionally take days or weeks to compile manually!
+
+### 📋 **Next Steps**
+
+1. **Expand Reporting:** Try different report criteria and custom filtering options
+2. **Scheduled Compliance:** Consider implementing automated compliance scanning schedules
+3. **Integration Opportunities:** Explore how to integrate these reports with your existing monitoring tools
+4. **Advanced Automation:** Use this foundation to build more complex infrastructure management workflows
+
+---
+
+**🎯 Congratulations on completing the Ansible System Data & Compliance Lab!**
+
+You now have the skills to transform infrastructure management from reactive to proactive, providing comprehensive visibility and compliance oversight across your entire environment!
