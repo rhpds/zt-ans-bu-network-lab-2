@@ -14,7 +14,7 @@ This introspection use case is a great way to get comfortable with automation wh
 
 
 .🔐 Access Credentials & Server Information
-====
+
 === Credentials
 Use these credentials to access your Ansible Automation Platform instance:
 
