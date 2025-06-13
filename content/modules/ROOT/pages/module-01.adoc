@@ -20,19 +20,6 @@ You have just joined the team! There are so many things you can automate but it 
 |----------|----------|
 | **admin** | **ansible123!** |
 
-### **DNS Domain Configuration**
-Your DNS domain for this lab is: **[[ Instruqt-Var key="DOMAIN" hostname="control" ]]**
-
-### **Server Infrastructure**
-
-| Server | FQDN |
-|--------|------|
-| **Windows Server** | windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]] |
-| **Node01** | node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]] |
-| **Node02** | node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]] |
-| **Node03** | node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]] |
-
----
 
 ## ☑️ Exercise 1: Backing up Linux File Systems
 
