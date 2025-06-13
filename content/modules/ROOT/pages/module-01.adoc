@@ -1,165 +1,118 @@
-= Ansible Automation Platform Lab Guide
-:toc:
-:toc-placement: preamble
-:icons: font
-:numbered:
+# Ansible Automation Platform Lab Guide
 
-== Welcome to the Team! 🎉
+## Welcome to the Team! 🎉
 
 Congratulations on joining the team! This lab will help you get started with automation using Ansible Automation Platform. We'll focus on safe, read-only tasks that will build your confidence before moving to more complex automation scenarios.
 
-This introspection use case is a great way to get comfortable with automation while gaining valuable information and building confidence for future automation projects.
+---
 
-== Lab Environment Setup
+## 🔐 Lab Environment Setup
 
+### Access Credentials
 
-.🔐 Access Credentials & Server Information
+| Username | Password    |
+|----------|-------------|
+| admin    | ansible123! |
 
-=== Credentials
-Use these credentials to access your Ansible Automation Platform instance:
+---
 
-[cols="1,1", options="header"]
-|===
-| Username | Password
-| admin    | ansible123!
-|===
+## 📋 Lab Exercise 1: Backing up Linux File Systems
 
-[%collapsible]
-== Lab Exercise 1: Backing up Linux File Systems
-
-=== Overview
+### Overview
 You have several Linux servers in your datacenter, and backing up their storage is a common task. With Ansible, you can automate multiple snapshot mechanisms whether your systems are in the cloud, VMs, or bare metal.
 
-== Step 1: Check Existing Backups
+### **Step 1: Check Existing Backups**
 
-.📋 Detailed Instructions
-====
-. Navigate to the lab `aap` tab and login using the credentials above (`admin/ansible123!`)
-. Click on the Menu dropdown icon (hamburger menu ☰)
-. Navigate to *Automation Execution* → *Templates*
-. Launch the template *Check RHEL Backups*
-+
-TIP: You can launch templates quickly by clicking on the 🚀 rocket icon.
+1. Navigate to the lab `aap` tab and login using the credentials above (`admin/ansible123!`)
+2. Click on the Menu dropdown icon (hamburger menu ☰)
+3. Navigate to **Automation Execution** → **Templates**
+4. Launch the template **Check RHEL Backups**
+   
+   > 💡 **TIP:** You can launch templates quickly by clicking on the 🚀 rocket icon.
 
-. Once the job completes, you should see that no backups are currently available
-====
+5. Once the job completes, you should see that no backups are currently available
 
-.Backup Check Results
-image::backupcheck.png[Initial backup check showing no backups available]
+### **Step 2: Create XFS Backups**
 
-== Step 2: Create XFS Backups
+1. Navigate back to **Automation Execution** → **Templates**
+2. Launch the **Server Backup - XFS/RHEL** template
+3. This will backup your three RHEL nodes by creating XFS dumps of the file systems
 
-[%collapsible]
-.📋 Detailed Instructions
-====
-. Navigate back to *Automation Execution* → *Templates*
-. Launch the *Server Backup - XFS/RHEL* template
-. This will backup your three RHEL nodes by creating XFS dumps of the file systems
+> ⚠️ **IMPORTANT:** This process takes 6-7 minutes to complete. Feel free to continue with other tasks and return to check the results later. Jobs can run safely in parallel!
 
-IMPORTANT: This process takes 6-7 minutes to complete. Feel free to continue with other tasks and return to check the results later. Jobs can run safely in parallel!
-====
-
-.XFS Backup Process
-image::xfsbackup.png[XFS backup job running]
-
-Step 3: Verify Backup Creation
+### **Step 3: Verify Backup Creation**
 
 Once the backup has completed:
 
-.📋 Detailed Instructions
-====
-. Launch the *Check RHEL Backups* template again
-. Verify that backups are now available for each server
-. You should see successful backup creation for all volume backups
+1. Launch the **Check RHEL Backups** template again
+2. Verify that backups are now available for each server
+3. You should see successful backup creation for all volume backups
 
-NOTE: You can skip this step initially and return later if the backup is still running.
-====
+> 📝 **NOTE:** You can skip this step initially and return later if the backup is still running.
 
-.Backup Verification
-image::afterbackupcheck.png[Backup check showing successful backups]
+---
 
-[%collapsible]
-== Lab Exercise 2: Windows Snapshots
+## 📋 Lab Exercise 2: Windows Snapshots
 
-=== Overview
+### Overview
 Now that you have backups of your RHEL systems, let's work with Windows systems. Windows has excellent built-in snapshotting functionality that we can automate with Ansible.
 
 Your Windows environment already has a backup strategy using third-party tools, but we need VSS (Volume Shadow Copy Service) snapshots for databases since they allow backups without locking or interrupting active files.
 
-=== Step 1: Create VSS Snapshots
+### **Step 1: Create VSS Snapshots**
 
-.📋 Detailed Instructions
-====
-. Navigate to *Automation Execution* → *Templates*
-. Launch the *Server Snapshot - VSS/Windows* template
-====
+1. Navigate to **Automation Execution** → **Templates**
+2. Launch the **Server Snapshot - VSS/Windows** template
 
-.Windows VSS Snapshot
-image::vss-snap.png[Windows VSS snapshot job]
-
-=== Step 2: Verify VSS Snapshots
+### **Step 2: Verify VSS Snapshots**
 
 Once the snapshot job completes:
 
-.📋 Detailed Instructions
-====
-. Navigate to *Automation Execution* → *Templates*
-. Execute the *Check Windows Backups* template
-====
-
-.VSS Snapshot Verification
-image::vss-snap-check.png[VSS snapshot verification results]
+1. Navigate to **Automation Execution** → **Templates**
+2. Execute the **Check Windows Backups** template
 
 Excellent! You can see that the VSS snapshot was created successfully.
 
-=== Step 3: Schedule Automated Snapshots
+### **Step 3: Schedule Automated Snapshots**
 
 Let's configure a schedule to automate these snapshots without manual intervention:
 
-.📋 Detailed Instructions
-====
-. Navigate to *Automation Execution* → *Templates*
-. Select *Server Backup - VSS/Windows*
-. Click on the *Schedules* tab
-. Click *Create schedule*
+1. Navigate to **Automation Execution** → **Templates**
+2. Select **Server Backup - VSS/Windows**
+3. Click on the **Schedules** tab
+4. Click **Create schedule**
 
-.Schedule Configuration
-image::win-shed.png[Windows schedule configuration]
+#### Schedule Configuration
 
 Configure the schedule with these details:
 
-[cols="1,2"]
-|===
-| Field | Value
-| Schedule Name | 5 Min Snappy
-| Description | Automated VSS Snaps
-| Start date/time | <Leave default>
-| Time Zone | <Leave default>
-|===
+| Field            | Value                    |
+|------------------|--------------------------|
+| Schedule Name    | 5 Min Snappy            |
+| Description      | Automated VSS Snaps     |
+| Start date/time  | <Leave default>         |
+| Time Zone        | <Leave default>         |
 
-. Click *Next*
-. Configure *Frequency*:
-  ** Set to "Minutely"
-  ** Set interval to 5 minutes
-  ** Select *Save rule*
-. Click *Next*
-. Skip exceptions (click *Next*)
-. Click *Finish*
-====
-
-.Schedule Details
-image::shed-details.png[Completed schedule configuration]
+5. Click **Next**
+6. Configure **Frequency**:
+   - Set to "Minutely"
+   - Set interval to 5 minutes
+   - Select **Save rule**
+7. Click **Next**
+8. Skip exceptions (click **Next**)
+9. Click **Finish**
 
 Perfect! Your automated snapshots are now configured and will run every 5 minutes.
 
-== Code Snippets
+---
 
-.💻 XFS Backup Automation Code
-====
+## 💻 Code Reference
+
+### XFS Backup Automation Code
+
 Here's the key Ansible code used for XFS backups:
 
-[source,yaml]
-----
+```yaml
 tasks:
   - name: Check if xfsdump is installed
     ansible.builtin.yum:
@@ -184,4 +137,22 @@ tasks:
   - name: Verify xfsdump success
     ansible.builtin.debug:
       msg: "Backup completed successfully: {{ backup_result.stdout }}"
-----
+```
+
+---
+
+## 🎯 Summary
+
+You've successfully completed:
+
+✅ **Exercise 1:** Linux File System Backups
+- Checked existing backup status
+- Created XFS backups for RHEL systems
+- Verified backup creation
+
+✅ **Exercise 2:** Windows VSS Snapshots  
+- Created VSS snapshots for Windows systems
+- Verified snapshot creation
+- Configured automated scheduling
+
+This introspection use case is a great way to get comfortable with automation while gaining valuable information and building confidence for future automation projects.
