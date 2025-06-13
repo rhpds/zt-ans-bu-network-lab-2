@@ -23,17 +23,6 @@ Use these credentials to access your Ansible Automation Platform:
 |===
 
 
-=== Server Information
-Your DNS domain for this lab is: *[[ Instruqt-Var key="DOMAIN" hostname="control" ]]*
-
-[cols="1,1", options="header"]
-|===
-| Server         | FQDN
-| Windows Server | windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-| Node01         | node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-| Node02         | node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-| Node03         | node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-|===
 
 [%collapsible]
 == Lab Exercise 1: Discovering Server Information
@@ -98,8 +87,6 @@ This output contains all the information that Ansible can gather from the system
 * Operating system details
 * Network configuration
 * Storage information
-* Installed packages
-* Environment variables
 * And much more!
 
 [%collapsible]
