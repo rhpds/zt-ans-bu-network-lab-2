@@ -1,156 +1,176 @@
-# 🚀 Ansible Automation Platform - Backup & Snapshot Lab Guide
+= Ansible Automation Platform - System Backup Lab
+:toc: left
+:toclevels: 3
+:icons: font
+:numbered:
 
----
+== Welcome to Your First Automation Lab!
 
-## 🎯 Welcome to Your Automation Journey!
+*Congratulations on joining the team!* 
 
-**Congratulations on joining the team!** 
+This lab introduces you to automation using Ansible Automation Platform through safe, read-only operations. You'll learn to automate system introspection tasks, building confidence to tackle more complex automation challenges.
 
-You have just joined the team! There are so many things you can automate but it can be daunting in starting with automation. A number of your tasks are read only, meaning you can safely automate without making any high risk changes. This introspection use case is great way to get comfortable automating in order to gain information as well as confidence to automate more as you go.
+[IMPORTANT]
+====
+This is a *read-only* automation lab designed for safe learning. You can explore automation without making high-risk changes to systems.
+====
 
-> 💡 **TIP:** This lab focuses on safe, read-only operations that are perfect for building automation confidence without risk.
+== Lab Environment Setup
 
+=== Authentication Credentials
 
----
+Use these credentials to access your Ansible Automation Platform instance:
 
-## 🔐 Lab Environment Credentials
+[cols="1,1", options="header"]
+|===
+| Username | Password
+| admin    | ansible123!
+|===
 
-### **Ansible Automation Platform Access**
+=== Lab Infrastructure
 
-| Username | Password |
-|----------|----------|
-| **admin** | **ansible123!** |
+Your DNS domain for this lab is: *[[ Instruqt-Var key="DOMAIN" hostname="control" ]]*
 
+[cols="1,2", options="header"]
+|===
+| Server        | FQDN
+| Windows Server| windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
+| Node01        | node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
+| Node02        | node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
+| Node03        | node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
+|===
 
+== Exercise 1: Linux File System Backups
 
-## ☑️ Exercise 1: Backing up Linux File Systems
+Linux servers require regular backup maintenance. With Ansible, you can automate various snapshot mechanisms across cloud, VM, and bare-metal environments.
 
-### 🎯 **Objective**
-Learn how to automate Linux file system backups using Ansible across multiple servers. You have a few Linux servers in your datacenter and a common task is backing up their storage. With Ansible you can drive multiple snapshot mechanisms, if its on the cloud, in VMs, or baremetal you can use Ansible to drive backups.
+=== Step 1: Check Current Backup Status
 
-### **Step 1: Initial Backup Assessment**
+. Navigate to the *aap* tab and login with your credentials (`admin/ansible123!`)
+. Click the *Menu* dropdown icon (hamburger menu)
+. Navigate to *Automation Execution* > *Templates*
+. Launch the template *Check RHEL Backups* by clicking the 🚀 icon
 
-1. Navigate to the lab **`aap`** tab and login using the credentials above (**admin/ansible123!**)
+[NOTE]
+====
+Templates can be launched quickly using the rocket (🚀) icon next to each template name.
+====
 
-2. Click on the **Menu dropdown icon** (hamburger menu ☰)
+After job completion, you should see no backups are currently available.
 
-3. Navigate to **Automation Execution** → **Templates**
+.Initial Backup Check Results
+image::backupcheck.png[No backups found]
 
-4. Launch the template **Check RHEL Backups**
-   > 💻 **Quick Launch:** Click the 🚀 icon for faster template execution
+=== Step 2: Create XFS File System Backups
 
-5. Once the job is complete, you should see there are **no backups available**
+Now let's create backups of the XFS file systems on your RHEL servers:
 
-.Backup Check
-image::backupcheck.png[]
+. Return to *Automation Execution* > *Templates*
+. Launch the *Server Backup - XFS/RHEL* template
+. This will backup all three RHEL nodes using XFS dumps
 
-### **Step 2: Execute XFS File System Backup**
+[WARNING]
+====
+This backup process takes 6-7 minutes to complete. Jobs can run in parallel, so feel free to continue with other exercises and return to check progress later.
+====
 
-1. Navigate back to **Automation Execution** → **Templates**
+.XFS Backup Process
+image::xfsbackup.png[XFS backup in progress]
 
-2. Launch **Server Backup - XFS/RHEL**
+=== Step 3: Verify Backup Creation
 
-3. This will backup your three RHEL nodes by creating **XFS dumps** of the file system
+Once the backup completes:
 
-> ⚠️ **IMPORTANT:** This process takes **6-7 minutes** - feel free to continue with other exercises and return later. Jobs can run in parallel safely and easily!
+. Launch the *Check RHEL Backups* template again
+. Confirm that backups are now available on each server
 
-.XFS Backup
-image::xfsbackup.png[]
+[TIP]
+====
+You can skip this verification step initially and return later if the backup process is still running.
+====
 
-### **Step 3: Verify Backup Completion**
+.Successful Backup Verification
+image::afterbackupcheck.png[Backups successfully created]
 
-1. Once the backup has completed, you should see successful volume backups on each server
+== Exercise 2: Windows System Snapshots
 
-2. Launch the **Check RHEL Backups** template again to verify backups are available
+Windows systems include built-in Volume Shadow Copy Service (VSS) for creating snapshots. While your organization uses third-party backup tools, VSS snapshots are essential for database backups as they don't interrupt active files.
 
-3. You can skip this step initially and return later if the backup is still processing
+=== Step 1: Create VSS Snapshots
 
-.After Backup Check
-image::afterbackupcheck.png[]
+. Navigate to *Automation Execution* > *Templates*
+. Launch the *Server Snapshot - VSS/Windows* template
 
----
+.Windows VSS Snapshot Creation
+image::vss-snap.png[Windows VSS snapshot process]
 
-## ☑️ Exercise 2: Windows VSS Snapshots
+=== Step 2: Verify VSS Snapshots
 
-### 🎯 **Objective**
-Implement automated Windows Volume Shadow Copy Service (VSS) snapshots for database backup strategies.
+After completion, confirm the VSS snapshot was created:
 
-So now that you have some backups of your RHEL systems, what about our Windows systems? Windows has a great snapshotting function built-in so lets automate it. Your Windows environment has a backup strategy already with third party tools in our organization but we need to have snapshots of the systems for our databases since snapshots allow backups to be taken without locking or interrupting active files.
+. Navigate to *Automation Execution* > *Templates*
+. Execute the *Check Windows Backups* template
 
-### **Step 1: Create VSS Snapshot**
+.VSS Snapshot Verification
+image::vss-snap-check.png[VSS snapshot verification]
 
-1. Navigate to **Automation Execution** → **Templates**
+[NOTE]
+====
+Successful completion shows that VSS snapshots are properly configured and functional.
+====
 
-2. Launch **Server Snapshot - VSS/Windows**
+== Exercise 3: Automated Scheduling
 
-.VSS
-image::vss-snap.png[]
+Eliminate manual intervention by scheduling recurring snapshots automatically.
 
-### **Step 2: Verify VSS Snapshot**
+=== Configure Automated VSS Snapshots
 
-1. Once completed, confirm the VSS snapshot creation
+. Navigate to *Automation Execution* > *Templates*
+. Select *Server Backup - VSS/Windows*
+. Click the *Schedules* tab
+. Click *Create schedule*
 
-2. Navigate to **Automation Execution** → **Templates**
+.Schedule Configuration Interface
+image::win-shed.png[Windows schedule configuration]
 
-3. Execute **Check Windows Backups**
+=== Schedule Parameters
 
-.VSSSnap
-image::vss-snap-check.png[]
+Configure your schedule with these settings:
 
-**Awesome!** ✨ We can see that the VSS snapshot is there!
+[cols="1,2", options="header"]
+|===
+| Parameter | Value
+| Schedule Name | 5 Min Snappy
+| Description | Automated VSS Snaps
+| Start date/time | _Leave as default_
+| Time Zone | _Leave as default_
+|===
 
-### **Step 3: Configure Automated Scheduling**
+=== Frequency Configuration
 
-Let's configure a schedule so we can drive these snapshots without having to trigger the templates manually. This means we can have a re-occurring snapshot without any hassle.
+. Click *Next*
+. Set *Frequency* to *Minutely*
+. Increase *Interval* to *5*
+. Select *Save rule* and click *Next*
+. Skip exceptions (click *Next*)
+. Click *Finish*
 
-1. Navigate to **Automation Execution** → **Templates**
+.Schedule Configuration Details
+image::shed-details.png[Detailed schedule settings]
 
-2. Select **Server Backup - VSS/Windows**
+[TIP]
+====
+Your automated snapshots are now configured! Check back later to verify the schedule is working correctly.
+====
 
-3. Navigate to the **Schedules** tab
+== Technical Reference: Code Snippets
 
-4. Click **Create schedule**
+For those interested in the underlying automation code, here are key snippets:
 
-.WindowsSche
-image::win-shed.png[]
+=== XFS Backup Automation
 
-### **Step 4: Schedule Configuration Details**
-
-Configure the schedule with the following parameters:
-
-| Field | Value |
-|-------|-------|
-| **Schedule Name** | `5 Min Snappy` |
-| **Description** | `Automated VSS Snaps` |
-| **Start date/time** | `<Leave as is>` |
-| **Time Zone** | `<Leave as is>` |
-
-1. Click **Next**
-
-2. Configure **Frequency** settings:
-   - **Frequency:** Minutely
-   - **Interval:** 5 minutes
-   - Select **Save rule**
-   - Click **Next**
-
-3. **Exceptions:** No exceptions needed - click **Next**
-
-4. Click **Finish** to complete the schedule setup
-
-.Schedule
-image::shed-details.png[]
-
-> ✅ **Great!** We can check on this automated schedule later!
-
----
-
-## 💻 Code Snippets for Review
-
-### 🔍 **XFS Backup Automation Code**
-
-Here's the key Ansible code for automating XFS backups:
-
-```yaml
+[source,yaml]
+----
 tasks:
 
 - name: Check if xfsdump is installed
@@ -176,34 +196,20 @@ tasks:
 - name: Verify xfsdump success
   ansible.builtin.debug:
     msg: "Backup completed successfully: {{ backup_result.stdout }}"
-```
+----
 
-> 📝 **NOTE:** This code demonstrates how Ansible can automate complex backup operations across multiple Linux systems simultaneously.
+== Summary
 
----
+Congratulations! You have successfully:
 
-## 🎉 Lab Summary & Completion Checklist
+* ✅ Created automated backups for Linux XFS file systems
+* ✅ Implemented Windows VSS snapshots
+* ✅ Configured automated scheduling for recurring snapshots
+* ✅ Verified backup operations across multiple systems
 
-### ✅ **What You've Accomplished**
+[IMPORTANT]
+====
+This lab demonstrates the power of Ansible automation for routine system maintenance tasks. These read-only operations provide a safe foundation for exploring more advanced automation scenarios.
+====
 
-- ✅ **Linux Backup Automation:** Successfully implemented XFS file system backups across multiple RHEL servers
-- ✅ **Windows Snapshot Management:** Automated VSS snapshot creation for Windows systems  
-- ✅ **Scheduling Automation:** Configured recurring automated snapshots without manual intervention
-- ✅ **Verification Processes:** Learned to validate backup completion and success
-- ✅ **Multi-Platform Management:** Demonstrated cross-platform automation capabilities
-
-### 🚀 **Key Learning Outcomes**
-
-1. **Safe Automation Practice:** Started with read-only operations to build confidence
-2. **Parallel Processing:** Experienced how Ansible can manage multiple systems simultaneously
-3. **Scheduling Capabilities:** Learned to automate recurring tasks without manual intervention
-4. **Cross-Platform Skills:** Worked with both Linux and Windows automation
-5. **Verification Best Practices:** Implemented proper backup validation procedures
-
-### 📋 **Next Steps**
-
-> 💡 **TIP:** Now that you've mastered these backup automation techniques, you're ready to tackle more complex automation challenges with confidence!
-
----
-
-**🎯 Congratulations on completing the Ansible Automation Platform Backup & Snapshot Lab!**
+You're now ready to tackle more complex automation challenges with confidence!
