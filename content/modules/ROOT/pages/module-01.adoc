@@ -12,7 +12,7 @@ This introspection use case is a great way to get comfortable with automation wh
 
 == Lab Environment Setup
 
-[%collapsible]
+
 .🔐 Access Credentials & Server Information
 ====
 === Credentials
@@ -47,9 +47,7 @@ TIP: You can launch templates quickly by clicking on the 🚀 rocket icon.
 .Backup Check Results
 image::backupcheck.png[Initial backup check showing no backups available]
 
-=== Step 2: Create XFS Backups
-
-Now let's create backups of the XFS file systems on your RHEL servers:
+Step 2: Create XFS Backups
 
 [%collapsible]
 .📋 Detailed Instructions
@@ -64,7 +62,7 @@ IMPORTANT: This process takes 6-7 minutes to complete. Feel free to continue wit
 .XFS Backup Process
 image::xfsbackup.png[XFS backup job running]
 
-=== Step 3: Verify Backup Creation
+Step 3: Verify Backup Creation
 
 Once the backup has completed:
 
