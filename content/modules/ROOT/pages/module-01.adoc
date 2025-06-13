@@ -40,6 +40,8 @@ Your DNS domain for this lab is: *[[ Instruqt-Var key="DOMAIN" hostname="control
 
 == Exercise 1: Linux File System Backups
 
+[%collapsible]
+====
 Linux servers require regular backup maintenance. With Ansible, you can automate various snapshot mechanisms across cloud, VM, and bare-metal environments.
 
 === Step 1: Check Current Backup Status
@@ -89,9 +91,12 @@ You can skip this verification step initially and return later if the backup pro
 
 .Successful Backup Verification
 image::afterbackupcheck.png[Backups successfully created]
+====
 
 == Exercise 2: Windows System Snapshots
 
+[%collapsible]
+====
 Windows systems include built-in Volume Shadow Copy Service (VSS) for creating snapshots. While your organization uses third-party backup tools, VSS snapshots are essential for database backups as they don't interrupt active files.
 
 === Step 1: Create VSS Snapshots
@@ -116,9 +121,12 @@ image::vss-snap-check.png[VSS snapshot verification]
 ====
 Successful completion shows that VSS snapshots are properly configured and functional.
 ====
+====
 
 == Exercise 3: Automated Scheduling
 
+[%collapsible]
+====
 Eliminate manual intervention by scheduling recurring snapshots automatically.
 
 === Configure Automated VSS Snapshots
@@ -159,6 +167,7 @@ image::shed-details.png[Detailed schedule settings]
 [TIP]
 ====
 Your automated snapshots are now configured! Check back later to verify the schedule is working correctly.
+====
 ====
 
 == Technical Reference: Code Snippets
