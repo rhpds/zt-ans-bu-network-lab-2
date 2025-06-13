@@ -39,7 +39,8 @@ Learn how to automate Linux file system backups using Ansible across multiple se
 
 5. Once the job is complete, you should see there are **no backups available**
 
-![Backup Check](backupcheck.png)
+.Backup Check
+image::backupcheck.png[]
 
 ### **Step 2: Execute XFS File System Backup**
 
@@ -51,7 +52,8 @@ Learn how to automate Linux file system backups using Ansible across multiple se
 
 > ⚠️ **IMPORTANT:** This process takes **6-7 minutes** - feel free to continue with other exercises and return later. Jobs can run in parallel safely and easily!
 
-![XFS Backup](xfsbackup.png)
+.XFS Backup
+image::xfsbackup.png[]
 
 ### **Step 3: Verify Backup Completion**
 
@@ -61,7 +63,8 @@ Learn how to automate Linux file system backups using Ansible across multiple se
 
 3. You can skip this step initially and return later if the backup is still processing
 
-![After Backup Check](afterbackupcheck.png)
+.After Backup Check
+image::afterbackupcheck.png[]
 
 ---
 
@@ -78,7 +81,8 @@ So now that you have some backups of your RHEL systems, what about our Windows s
 
 2. Launch **Server Snapshot - VSS/Windows**
 
-![VSS Snapshot](vss-snap.png)
+.VSS
+image::vss-snap.png[]
 
 ### **Step 2: Verify VSS Snapshot**
 
@@ -88,7 +92,8 @@ So now that you have some backups of your RHEL systems, what about our Windows s
 
 3. Execute **Check Windows Backups**
 
-![VSS Snapshot Check](vss-snap-check.png)
+.VSSSnap
+image::vss-snap-check.png[]
 
 **Awesome!** ✨ We can see that the VSS snapshot is there!
 
@@ -104,7 +109,8 @@ Let's configure a schedule so we can drive these snapshots without having to tri
 
 4. Click **Create schedule**
 
-![Windows Schedule](win-shed.png)
+.WindowsSche
+image::win-shed.png[]
 
 ### **Step 4: Schedule Configuration Details**
 
@@ -129,7 +135,8 @@ Configure the schedule with the following parameters:
 
 4. Click **Finish** to complete the schedule setup
 
-![Schedule Details](shed-details.png)
+.Schedule
+image::shed-details.png[]
 
 > ✅ **Great!** We can check on this automated schedule later!
 
