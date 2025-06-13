@@ -164,9 +164,8 @@ The report will show:
 * 🔍 **Manual** - Items requiring manual verification
 
 [%collapsible]
-== Code Reference
+== Code Snippets
 
-[%collapsible]
 === OpenSCAP Automation Implementation
 
 Here's the key Ansible code used for OpenSCAP compliance scanning:
@@ -253,10 +252,3 @@ tasks:
               group: root
               mode: 0644
 ----
-
-Congratulations! You've successfully:
-
-* ✅ Gathered comprehensive system facts using Ansible
-* ✅ Generated infrastructure reports at scale
-* ✅ Implemented security compliance scanning
-* ✅ Created automated reporting workflows
