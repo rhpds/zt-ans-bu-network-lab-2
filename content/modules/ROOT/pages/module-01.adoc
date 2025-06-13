@@ -10,6 +10,7 @@ You have just joined the team! There are so many things you can automate but it 
 
 > 💡 **TIP:** This lab focuses on safe, read-only operations that are perfect for building automation confidence without risk.
 
+
 ---
 
 ## 🔐 Lab Environment Credentials
@@ -19,6 +20,8 @@ You have just joined the team! There are so many things you can automate but it 
 | Username | Password |
 |----------|----------|
 | **admin** | **ansible123!** |
+
+
 
 ## ☑️ Exercise 1: Backing up Linux File Systems
 
