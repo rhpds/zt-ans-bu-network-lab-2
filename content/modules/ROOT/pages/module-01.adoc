@@ -1,0 +1,214 @@
+= Ansible Automation Platform Lab Guide
+:toc:
+:toc-placement: preamble
+:icons: font
+:numbered:
+
+== Welcome to the Team! 🎉
+
+Congratulations on joining the team! This lab will help you get started with automation using Ansible Automation Platform. We'll focus on safe, read-only tasks that will build your confidence before moving to more complex automation scenarios.
+
+This introspection use case is a great way to get comfortable with automation while gaining valuable information and building confidence for future automation projects.
+
+== Lab Environment Setup
+
+[%collapsible]
+.🔐 Access Credentials & Server Information
+====
+=== Credentials
+Use these credentials to access your Ansible Automation Platform instance:
+
+[cols="1,1", options="header"]
+|===
+| Username | Password
+| admin    | ansible123!
+|===
+
+
+== Lab Exercise 1: Backing up Linux File Systems
+
+=== Overview
+You have several Linux servers in your datacenter, and backing up their storage is a common task. With Ansible, you can automate multiple snapshot mechanisms whether your systems are in the cloud, VMs, or bare metal.
+
+=== Step 1: Check Existing Backups
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate to the lab `aap` tab and login using the credentials above (`admin/ansible123!`)
+. Click on the Menu dropdown icon (hamburger menu ☰)
+. Navigate to *Automation Execution* → *Templates*
+. Launch the template *Check RHEL Backups*
++
+TIP: You can launch templates quickly by clicking on the 🚀 rocket icon.
+
+. Once the job completes, you should see that no backups are currently available
+====
+
+.Backup Check Results
+image::backupcheck.png[Initial backup check showing no backups available]
+
+=== Step 2: Create XFS Backups
+
+Now let's create backups of the XFS file systems on your RHEL servers:
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate back to *Automation Execution* → *Templates*
+. Launch the *Server Backup - XFS/RHEL* template
+. This will backup your three RHEL nodes by creating XFS dumps of the file systems
+
+IMPORTANT: This process takes 6-7 minutes to complete. Feel free to continue with other tasks and return to check the results later. Jobs can run safely in parallel!
+====
+
+.XFS Backup Process
+image::xfsbackup.png[XFS backup job running]
+
+=== Step 3: Verify Backup Creation
+
+Once the backup has completed:
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Launch the *Check RHEL Backups* template again
+. Verify that backups are now available for each server
+. You should see successful backup creation for all volume backups
+
+NOTE: You can skip this step initially and return later if the backup is still running.
+====
+
+.Backup Verification
+image::afterbackupcheck.png[Backup check showing successful backups]
+
+== Lab Exercise 2: Windows Snapshots
+
+=== Overview
+Now that you have backups of your RHEL systems, let's work with Windows systems. Windows has excellent built-in snapshotting functionality that we can automate with Ansible.
+
+Your Windows environment already has a backup strategy using third-party tools, but we need VSS (Volume Shadow Copy Service) snapshots for databases since they allow backups without locking or interrupting active files.
+
+=== Step 1: Create VSS Snapshots
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate to *Automation Execution* → *Templates*
+. Launch the *Server Snapshot - VSS/Windows* template
+====
+
+.Windows VSS Snapshot
+image::vss-snap.png[Windows VSS snapshot job]
+
+=== Step 2: Verify VSS Snapshots
+
+Once the snapshot job completes:
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate to *Automation Execution* → *Templates*
+. Execute the *Check Windows Backups* template
+====
+
+.VSS Snapshot Verification
+image::vss-snap-check.png[VSS snapshot verification results]
+
+Excellent! You can see that the VSS snapshot was created successfully.
+
+=== Step 3: Schedule Automated Snapshots
+
+Let's configure a schedule to automate these snapshots without manual intervention:
+
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate to *Automation Execution* → *Templates*
+. Select *Server Backup - VSS/Windows*
+. Click on the *Schedules* tab
+. Click *Create schedule*
+
+.Schedule Configuration
+image::win-shed.png[Windows schedule configuration]
+
+Configure the schedule with these details:
+
+[cols="1,2"]
+|===
+| Field | Value
+| Schedule Name | 5 Min Snappy
+| Description | Automated VSS Snaps
+| Start date/time | <Leave default>
+| Time Zone | <Leave default>
+|===
+
+. Click *Next*
+. Configure *Frequency*:
+  ** Set to "Minutely"
+  ** Set interval to 5 minutes
+  ** Select *Save rule*
+. Click *Next*
+. Skip exceptions (click *Next*)
+. Click *Finish*
+====
+
+.Schedule Details
+image::shed-details.png[Completed schedule configuration]
+
+Perfect! Your automated snapshots are now configured and will run every 5 minutes.
+
+== Code Reference
+
+[%collapsible]
+.💻 XFS Backup Automation Code
+====
+Here's the key Ansible code used for XFS backups:
+
+[source,yaml]
+----
+tasks:
+  - name: Check if xfsdump is installed
+    ansible.builtin.yum:
+      name: xfsdump
+      state: present
+    when: ansible_facts.os_family == "RedHat"
+
+  - name: Ensure the backup directory exists
+    ansible.builtin.file:
+      path: "{{ backup_file | dirname }}"
+      state: directory
+      mode: '0755'
+
+  - name: Perform xfsdump backup
+    ansible.builtin.command:
+      cmd: >
+        xfsdump -l 0 -L {{ backup_label }}
+        -f {{ backup_file }} {{ xfs_mount_point }}
+    register: backup_result
+    ignore_errors: no
+
+  - name: Verify xfsdump success
+    ansible.builtin.debug:
+      msg: "Backup completed successfully: {{ backup_result.stdout }}"
+----
+
+=== Key Code Components Explained
+
+**Package Installation**
+- Ensures `xfsdump` utility is installed on RedHat systems
+- Uses conditional logic to target only compatible systems
+
+**Directory Preparation**
+- Creates backup directory structure with proper permissions
+- Uses Jinja2 templating for dynamic path generation
+
+**Backup Execution**
+- Performs level 0 (full) XFS dump with custom label
+- Registers output for verification and logging
+
+**Result Verification**
+- Displays success message with backup details
+- Enables troubleshooting through detailed output
+====
+
