@@ -15,7 +15,7 @@ antora:
       solveButton: false
 
 tabs:
-  - name: control
+  - name: aap
     url: https://control-${guid}.${domain}/
   # - name: gitea
   #   url: https://gitea-${guid}.${domain}/
