@@ -20,7 +20,6 @@ You have just joined the team! There are so many things you can automate but it 
 |----------|----------|
 | **admin** | **ansible123!** |
 
-
 ## ☑️ Exercise 1: Backing up Linux File Systems
 
 ### 🎯 **Objective**
