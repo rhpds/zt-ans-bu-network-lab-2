@@ -24,7 +24,7 @@ Use these credentials to access your Ansible Automation Platform instance:
 | admin    | ansible123!
 |===
 
-
+[%collapsible]
 == Lab Exercise 1: Backing up Linux File Systems
 
 === Overview
@@ -32,7 +32,6 @@ You have several Linux servers in your datacenter, and backing up their storage 
 
 === Step 1: Check Existing Backups
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to the lab `aap` tab and login using the credentials above (`admin/ansible123!`)
@@ -69,7 +68,6 @@ image::xfsbackup.png[XFS backup job running]
 
 Once the backup has completed:
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Launch the *Check RHEL Backups* template again
@@ -82,6 +80,7 @@ NOTE: You can skip this step initially and return later if the backup is still r
 .Backup Verification
 image::afterbackupcheck.png[Backup check showing successful backups]
 
+[%collapsible]
 == Lab Exercise 2: Windows Snapshots
 
 === Overview
@@ -91,7 +90,6 @@ Your Windows environment already has a backup strategy using third-party tools, 
 
 === Step 1: Create VSS Snapshots
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to *Automation Execution* → *Templates*
@@ -105,7 +103,6 @@ image::vss-snap.png[Windows VSS snapshot job]
 
 Once the snapshot job completes:
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to *Automation Execution* → *Templates*
@@ -121,7 +118,6 @@ Excellent! You can see that the VSS snapshot was created successfully.
 
 Let's configure a schedule to automate these snapshots without manual intervention:
 
-[%collapsible]
 .📋 Detailed Instructions
 ====
 . Navigate to *Automation Execution* → *Templates*
@@ -158,9 +154,8 @@ image::shed-details.png[Completed schedule configuration]
 
 Perfect! Your automated snapshots are now configured and will run every 5 minutes.
 
-== Code Reference
+== Code Snippets
 
-[%collapsible]
 .💻 XFS Backup Automation Code
 ====
 Here's the key Ansible code used for XFS backups:
@@ -192,23 +187,3 @@ tasks:
     ansible.builtin.debug:
       msg: "Backup completed successfully: {{ backup_result.stdout }}"
 ----
-
-=== Key Code Components Explained
-
-**Package Installation**
-- Ensures `xfsdump` utility is installed on RedHat systems
-- Uses conditional logic to target only compatible systems
-
-**Directory Preparation**
-- Creates backup directory structure with proper permissions
-- Uses Jinja2 templating for dynamic path generation
-
-**Backup Execution**
-- Performs level 0 (full) XFS dump with custom label
-- Registers output for verification and logging
-
-**Result Verification**
-- Displays success message with backup details
-- Enables troubleshooting through detailed output
-====
-
