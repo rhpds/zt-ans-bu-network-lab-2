@@ -32,11 +32,15 @@ You have several Linux servers in your datacenter, and backing up their storage 
 
 5. Once the job completes, you should see that no backups are currently available
 
+![Initial backup check showing no backups available](backupcheck.png)
+
 ### **Step 2: Create XFS Backups**
 
 1. Navigate back to **Automation Execution** → **Templates**
 2. Launch the **Server Backup - XFS/RHEL** template
 3. This will backup your three RHEL nodes by creating XFS dumps of the file systems
+
+![XFS backup job running](xfsbackup.png)
 
 > ⚠️ **IMPORTANT:** This process takes 6-7 minutes to complete. Feel free to continue with other tasks and return to check the results later. Jobs can run safely in parallel!
 
@@ -47,6 +51,8 @@ Once the backup has completed:
 1. Launch the **Check RHEL Backups** template again
 2. Verify that backups are now available for each server
 3. You should see successful backup creation for all volume backups
+
+![Backup check showing successful backups](afterbackupcheck.png)
 
 > 📝 **NOTE:** You can skip this step initially and return later if the backup is still running.
 
@@ -64,12 +70,16 @@ Your Windows environment already has a backup strategy using third-party tools, 
 1. Navigate to **Automation Execution** → **Templates**
 2. Launch the **Server Snapshot - VSS/Windows** template
 
+![Windows VSS snapshot job](vss-snap.png)
+
 ### **Step 2: Verify VSS Snapshots**
 
 Once the snapshot job completes:
 
 1. Navigate to **Automation Execution** → **Templates**
 2. Execute the **Check Windows Backups** template
+
+![VSS snapshot verification results](vss-snap-check.png)
 
 Excellent! You can see that the VSS snapshot was created successfully.
 
@@ -81,6 +91,8 @@ Let's configure a schedule to automate these snapshots without manual interventi
 2. Select **Server Backup - VSS/Windows**
 3. Click on the **Schedules** tab
 4. Click **Create schedule**
+
+![Windows schedule configuration](win-shed.png)
 
 #### Schedule Configuration
 
@@ -101,6 +113,8 @@ Configure the schedule with these details:
 7. Click **Next**
 8. Skip exceptions (click **Next**)
 9. Click **Finish**
+
+![Completed schedule configuration](shed-details.png)
 
 Perfect! Your automated snapshots are now configured and will run every 5 minutes.
 
