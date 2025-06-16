@@ -1,124 +1,190 @@
+= Windows Patching Report with Ansible
+:toc:
+:toc-placement: preamble
+:icons: font
+:numbered:
 
+== Introduction 🔧
 
-Another great report to generate is a patching report!
-Our Windows server is sure to need some patches but we dont have access to the system.
-So lets get Ansible to get the required patches and we can provide this back to our Windows team.
+Generating patching reports is another essential automation task! Our Windows server is sure to need some patches, but we don't have direct access to the system. Let's use Ansible to gather the required patch information and provide this data back to our Windows team.
 
-Below are credentials for our Ansible Automation Platform that you should use:
+This approach allows us to assess patch requirements without disrupting production systems, providing valuable insights for maintenance planning and security compliance.
 
+== Lab Environment Setup
+
+[%collapsible]
+.🔐 Access Credentials & Server Information
+====
+=== Credentials
+Use these credentials to access your Ansible Automation Platform:
+
+[cols="1,1", options="header"]
 |===
 | Username | Password
-
-| admin
-| ansible123!
-
-|
-|
+| admin    | ansible123!
 |===
 
-Your DNS domain for this lab is: *[[ Instruqt-Var key="DOMAIN" hostname="control" ]]*
+[%collapsible]
+== Lab Exercise 01: Creating Windows Update Reports
 
+=== Overview
+We'll gather all the patch details and create a comprehensive report using Jinja templates. The report will even be published as a web page on our Windows host for easy access by the Windows team.
+
+This automated approach provides several key benefits:
+* **Non-Disruptive Assessment** - Scan systems without affecting operations
+* **Comprehensive Reporting** - Detailed patch information with severity levels
+* **Web-Based Access** - Easy sharing with stakeholders via browser
+* **Automated Scheduling** - Regular assessments without manual intervention
+
+=== Step 1: Access the Windows Update Template
+
+.📋 Detailed Instructions
+====
+. Navigate to *Automation Execution* → *Templates*
+. Select *Windows Update Report*
+
+Before we can launch the template, we need to create a survey to specify which update categories we want to search for.
+
+NOTE: Surveys in Ansible Automation Platform allow templates to collect input from users at runtime, making automation more flexible and interactive.
+====
+
+.Update Template Configuration
+image::update-template.png[Windows Update template interface]
+
+=== Step 2: Create Survey Configuration
+
+.📋 Detailed Instructions
+====
+. Navigate to the *Survey* tab
+. Add the following survey configuration:
+
+[cols="1,2", options="header"]
 |===
-| Server | FQDN
-
-| Windows Server
-| windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node01
-| node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node02
-| node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node03
-| node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
+| Field | Value
+| Question | Which update category are you wanting to search for?
+| Description | Windows Update Category
+| Answer variable name | update_catagory
+| Answer type | Multiple Choice (single select)
 |===
 
-= ☑️ We need a patch report
+**Multiple Choice Options** (add each option individually using the + button):
+* **Security Updates** - Critical security patches and fixes
+* **Critical Updates** - Important system stability updates  
+* **Tools** - Microsoft tools and utilities
+* **Definition Updates** - Antivirus and security definitions
+* **Updates** - General feature and performance updates
 
-We can gather all the details and then create a report using jinja templates again.
-We will even post the report as a web page on our Windows host!
+TIP: Start with Security Updates for your first scan as these are typically the highest priority for most organizations.
+====
 
-Navigate  to *Automation Execution* > *Templates*, and select *Windows Update Report*.
-Before we can launch it we need to create a survey so we can decide which updates we are looking for.
+.Survey Configuration Interface
+image::survey.png[Survey configuration screen]
 
-image::update-template.png[Update_tem]
+=== Step 3: Enable and Configure Survey
 
-Navigate to the `Survey` tab and add the following details:
+.📋 Detailed Instructions
+====
+. Click *Create survey question*
+. Enable the Survey using the toggle at the top of the pane
 
-NOTE: To add each multiple choice option you will need fill in the field and then click on the + to add it to the list.
+IMPORTANT: Make sure to enable the survey toggle, or the template won't prompt for input during execution. The toggle should show as "ON" or highlighted.
 
- Question: Which update catagory are you wanting to search for?
- Description: Windows Update Catagory
- Answer variable name: update_catagory
- Answer type: Multiple Choice (single select)
- Multiple Choice Options: Security Updates, Critical Updates, Tools, Definition Updates, Updates
+The survey feature allows the same template to be used for different update categories without creating separate templates for each scenario.
+====
 
-image::survey.png[SURVEY]
+.Survey Enable Toggle
+image::survey-enable.png[Survey enablement interface]
 
-You can then click on *Create survey question*.
-Make sure you enable the Survey at the top of the pane with the toggle.
+=== Step 4: Execute the Template
 
-image::survey-enable.png[SURVEY_EN]
+.📋 Detailed Instructions
+====
+. Launch the template by clicking the rocket 🚀 icon
+. From the dropdown list, select *Security Updates*
+. Click *Next* and then *Launch*
+. Wait for the template to complete execution
 
-Once enabled, we can now launch the template and select *Security Updates* from the drop down list.
+The scan process typically takes 2-3 minutes depending on the number of available updates and system performance.
+====
 
-Once the template has completed, navigate to the `Windows Report` tab.
-You should be presented with the outstanding update that is needed for this system.
+=== Step 5: Review the Patch Report
 
-image::update-report.png[WIN-REPORT]
+.📋 Detailed Instructions
+====
+. Once the template completes, navigate to the *Windows Report* tab
+. Review the outstanding updates needed for the system
+. Note the generated timestamp and server information
 
-Well done!
-you have just automated a number of backups and you have gathered data and presented it as a report for your team!
-all without affecting production and with Ansible!
+The report is automatically published to the Windows server's IIS web service, making it accessible to team members via web browser.
+====
 
-[#lastCheck]
-= ☑️ Last check!
+.Windows Update Report
+image::update-report.png[Generated Windows update report]
 
-Before we finish off, navigate  to *Automation Execution* > *Jobs* and observe that your Server Backup -VSS/Windows jobs that you have scheduled earlier have run.
-You can also run the template Check Windows Backups to see if you have some VSS snapshots!
+== Verification: Scheduled Backup Jobs
 
-image::vss-snaps.png[VSS_SNAPS]
+=== Last Check: Verify Automated Backups
 
-[#codeSnippets]
-= ☑️ Code Snippets for Review
+Before finishing, let's verify that our previously scheduled backup jobs are working correctly:
 
-Some key code snippets if you are interested:
+[%collapsible]
+.📋 Detailed Instructions
+====
+. Navigate to *Automation Execution* → *Jobs*
+. Observe that your *Server Backup - VSS/Windows* jobs have run automatically
+. Check the job status and completion times
+. Run the *Check Windows Backups* template to verify VSS snapshots exist
+. Review the snapshot creation timestamps and sizes
 
-Generating a Windows report:
+This verification ensures that both patching assessment and backup protection are working in harmony to maintain system security and data protection.
+====
 
-....
-     tasks:
+.VSS Snapshot Verification
+image::vss-snaps.png[VSS snapshots verification]
 
-          - name: Create site directory structure
-      ansible.windows.win_file:
-        path: "{{ report_path }}"
-        state: directory
+You should see multiple VSS snapshots created by your scheduled automation, demonstrating that your backup strategy is working as designed.
 
-    - name: Show us the updates
-      debug:
-        msg: "{{ update_catagory }}"
+== Code Snippets
 
-    - name: Check available updates
-      ansible.windows.win_updates:
-        category_names:
-         - "{{ update_catagory | default(omit) }}"
-        state: searched
-      register: update_result
+[%collapsible]
+.💻 Windows Update Report Generation
+====
+Here's the complete Ansible code used for generating Windows update reports:
 
-    - name: Generate HTML report
-      ansible.windows.win_template:
-        src: templates/win_patch_report.html.j2
-        dest: C:\inetpub\wwwroot\index.html
-        force: true
-      notify: restart_iis
-      vars:
-        updates: "{{ update_result.updates }}"
+[source,yaml]
+----
+tasks:
+  - name: Create site directory structure
+    ansible.windows.win_file:
+      path: "{{ report_path }}"
+      state: directory
 
-  handlers:
-    - name: restart_iis
-      ansible.windows.win_service:
-        name: W3Svc
-        state: restarted
-        start_mode: auto
-....
+  - name: Show us the updates
+    debug:
+      msg: "{{ update_catagory }}"
+
+  - name: Check available updates
+    ansible.windows.win_updates:
+      category_names:
+        - "{{ update_catagory | default(omit) }}"
+      state: searched
+    register: update_result
+
+  - name: Generate HTML report
+    ansible.windows.win_template:
+      src: templates/win_patch_report.html.j2
+      dest: C:\inetpub\wwwroot\index.html
+      force: true
+    notify: restart_iis
+    vars:
+      updates: "{{ update_result.updates }}"
+
+handlers:
+  - name: restart_iis
+    ansible.windows.win_service:
+      name: W3Svc
+      state: restarted
+      start_mode: auto
+----
+
+**🎉 Outstanding Achievement!** You've successfully mastered essential Ansible automation skills for Windows patch management, infrastructure reporting, and operational excellence. These comprehensive skills provide a solid foundation for advanced automation scenarios and position you as a valuable contributor to your organization's automation journey.

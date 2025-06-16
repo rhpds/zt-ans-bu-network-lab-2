@@ -74,8 +74,8 @@ tee /tmp/setup.yml << EOF
       controller_password: ansible123!
       validate_certs: false
       inputs:
-        username: instruqt
-        password: Passw0rd!
+        username: Administrator
+        password: Ansible123!
 
   - name: (EXECUTION) add Arista credential
     ansible.controller.credential:

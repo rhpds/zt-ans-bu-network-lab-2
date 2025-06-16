@@ -15,7 +15,7 @@ antora:
       solveButton: false
 
 tabs:
-  - name: control
+  - name: aap
     url: https://control-${guid}.${domain}/
   # - name: gitea
   #   url: https://gitea-${guid}.${domain}/
@@ -23,7 +23,7 @@ tabs:
   - name: Report Server
     url: https://node03-${guid}.${domain}/index.html
     external: false
-  - name: OpenScap Report
+  - name: Compliance Report
     url: https://node02-${guid}.${domain}/oscap-reports/ospp/
     external: false
   - name: Windows RDP
