@@ -1,5 +1,7 @@
 #!/bin/bash
 
+systemctl stop systemd-tmpfiles-setup.service
+systemctl disable systemd-tmpfiles-setup.service
 
 # Install collection(s)
 ansible-galaxy collection install ansible.eda
