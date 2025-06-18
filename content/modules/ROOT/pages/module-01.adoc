@@ -18,26 +18,7 @@ Congratulations on joining the team! This lab will introduce you to automation u
 | ansible123!
 |===
 
-==== Server Information
 
-Your DNS domain for this lab is: *[[ Instruqt-Var key="DOMAIN" hostname="control" ]]*
-
-[cols="1,1"]
-|===
-| Server | FQDN
-
-| Windows Server
-| windows.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node01
-| node01.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node02
-| node02.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-
-| Node03
-| node03.[[ Instruqt-Var key="DOMAIN" hostname="control" ]]
-|===
 
 == Lab Exercises
 
