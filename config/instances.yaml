@@ -222,7 +222,7 @@ virtualmachines:
     image: "base-zero-windows-2025-5"
     memory: "16G"
     cores: 4
-    image_size: "30Gi"
+    image_size: "60Gi"
     tags:
       - key: "AnsibleGroup"
         value: "isolated"
