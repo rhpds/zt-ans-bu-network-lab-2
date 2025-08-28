@@ -1,5 +1,5 @@
 ---
-# Containers are under development
+# Containers
 containers:
   - name: gitea
     image: gitea/gitea:1.16.8-rootless
