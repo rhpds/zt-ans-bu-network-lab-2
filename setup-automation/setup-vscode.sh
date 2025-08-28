@@ -191,7 +191,7 @@ sudo chown rhel:rhel /home/rhel/.ssh/config
 
 tee /home/rhel/ansible.cfg << EOF
 [defaults]
-stdout_callback = yaml
+# stdout_callback = yaml
 connection = smart
 timeout = 60
 deprecation_warnings = False
@@ -206,4 +206,4 @@ connect_timeout = 200
 command_timeout = 200
 EOF
 
-ansible-playbook /home/rhel/debug.yml
+/usr/local/bin/ansible-playbook /home/rhel/debug.yml
