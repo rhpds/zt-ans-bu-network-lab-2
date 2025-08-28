@@ -12,8 +12,8 @@ antora:
       solveButton: false
 
 tabs:
-  - name: _>Code
-    url: https://control-${guid}.${domain}/?folder=/home/coder/project
+  - name: ">_Code"
+    url: https://code-server-${guid}.${domain}/?folder=/home/coder/project
     external: false
 
   # - name: Windows RDP
