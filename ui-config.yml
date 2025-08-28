@@ -14,10 +14,7 @@ antora:
 tabs:
   - name: _>Code
     url: https://control-${guid}.${domain}/?folder=/home/coder/project
-    modules:
-      - module-01
-      - module-02
-    external: true
+    external: false
 
   # - name: Windows RDP
   #   url: https://windows-ironrdp-${guid}.${domain}/
