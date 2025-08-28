@@ -12,13 +12,13 @@ antora:
       solveButton: false
 
 tabs:
-  - name: ">_Code"
-    url: https://code-server-${guid}.${domain}/?folder=/home/coder/project
+  - name: "VS Code"
+    url: https://vscode-${guid}.${domain}/?folder=/home/coder/project
     external: false
     secondary_url: /wetty
     secondary_name: Terminal
-  - name: ">_ control"
-    url: /wetty
+  - name: "TERMINAL"
+    url: /wetty_vscode
 
   # - name: Windows RDP
   #   url: https://windows-ironrdp-${guid}.${domain}/
