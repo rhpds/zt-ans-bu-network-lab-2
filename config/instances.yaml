@@ -100,7 +100,7 @@ virtualmachines:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
         - systemctl reload sshd
   - name: "cisco"
-    image: "cisco-csr-17-3-9"
+    image: "cisco8000v"
     memory: "2G"
     cores: 2
     image_size: "30Gi"
