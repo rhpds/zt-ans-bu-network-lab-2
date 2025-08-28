@@ -13,10 +13,8 @@ antora:
 
 tabs:
   - name: "VS Code"
-    url: https://vscode-${guid}.${domain}/?folder=/home/coder/project
+    url: https://vscode-${guid}.${domain}
     external: false
-    secondary_url: /wetty
-    secondary_name: Terminal
   - name: "TERMINAL"
     url: /wetty_vscode
 
