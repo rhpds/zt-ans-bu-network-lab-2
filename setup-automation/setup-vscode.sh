@@ -66,8 +66,8 @@ sudo chown rhel:rhel /home/rhel/playbook.yml
 sudo chown rhel:rhel /home/rhel/debug.yml
 
 tee /home/rhel/hosts << EOF
-cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=ansible
-code-server ansible_user=rhel ansible_password=ansible123!
+cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
+vscode ansible_user=rhel ansible_password=ansible123!
 EOF
 
 # set vscode default settings
