@@ -1,6 +1,6 @@
 ---
 site:
-  title: Ansible Automation Roadshow - Scenario 01
+  title: "Network automation basics: First playbook"
   url: https://redhat-scholars.github.io/course-template
   start_page: modules::index.adoc
 

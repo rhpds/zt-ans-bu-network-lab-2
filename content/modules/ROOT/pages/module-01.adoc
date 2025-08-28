@@ -1,165 +1,162 @@
-= Ansible Automation Platform Lab Guide
 :toc:
 :toc-placement: auto
+= Your first Network Ansible Playbook
 
-== Welcome to the Team!
+== For this challenge we will examine an already created Ansible Playbook
 
-Congratulations on joining the team! This lab will introduce you to automation using Ansible Automation Platform. We'll start with read-only tasks that are safe to automate, helping you build confidence before moving to more complex automation scenarios.
+=== Ansible Network Automation Basics
 
-=== Lab Environment Setup
+The lab objective is to use Ansible Automation to update the configuration of a Cisco CSR router. This exercise will not create an Ansible Playbook, but use an existing one that has been provided.
 
-==== Access Credentials
+This exercise will cover:
 
-[cols="1,1"]
-|===
-| Username | Password
+- examining an existing Ansible Playbook
+- executing an Ansible Playbook on the command line using the ansible-navigator command
+- check mode (the `--check` parameter)
+- verbose mode (the `--verbose` or -v parameter)
 
-| admin
-| ansible123!
-|===
+=== What makes up an Ansible Playbook?
+
+image::https://github.com/IPvSean/pictures_for_github/blob/master/what_makes_up_playbook.png?raw=true[]
 
 
+=== Ansible Plays
 
-== Lab Exercises
-
-=== Exercise 1: Backing up Linux File Systems
-
-Managing backups across multiple Linux servers is a common operational task. Ansible can automate various snapshot mechanisms whether your infrastructure is cloud-based, virtualized, or bare metal.
-
-==== Step 1: Check Current Backup Status
-
-. Navigate to the `aap` tab and login using the credentials above (`admin/ansible123!`)
-. Click on the Menu dropdown icon (hamburger menu)
-. Navigate to *Automation Execution* → *Templates*
-. Launch the template *Check RHEL Backups* by clicking the 🚀 icon
-
-You should see that no backups are currently available.
-
-.Current Backup Status
-image::/backupcheck.png[Backup Check Results]
-
-==== Step 2: Create XFS Backups
-
-Now let's create backups of the XFS file systems on your RHEL servers:
-
-. Navigate back to *Automation Execution* → *Templates*
-. Launch the *Server Backup - XFS/RHEL* template
-. This process will backup your three RHEL nodes using XFS dumps
-
-[NOTE]
-====
-This backup process takes approximately 6-7 minutes. Feel free to proceed with other tasks while it runs - Ansible jobs can run in parallel safely!
-====
-
-.XFS Backup Process
-image::xfsbackup.png[XFS Backup in Progress]
-
-==== Step 3: Verify Backup Creation
-
-Once the backup completes:
-
-. Launch the *Check RHEL Backups* template again
-. Verify that backups are now available on each server
-
-.Backup Verification
-image::afterbackupcheck.png[Backup Check After Creation]
-
-=== Exercise 2: Windows System Snapshots
-
-Windows systems have built-in Volume Shadow Copy Service (VSS) snapshotting capabilities. While your organization may use third-party backup tools, VSS snapshots are essential for database systems as they allow backups without locking active files.
-
-==== Step 1: Create VSS Snapshots
-
-. Navigate to *Automation Execution* → *Templates*
-. Launch the *Server Snapshot - VSS/Windows* template
-
-.Windows VSS Snapshot
-image::vss-snap.png[Windows VSS Snapshot Creation]
-
-==== Step 2: Verify Snapshot Creation
-
-. Navigate to *Automation Execution* → *Templates*
-. Execute the *Check Windows Backups* template
-
-.VSS Snapshot Verification
-image::vss-snap-check.png[VSS Snapshot Check]
-
-Great! The VSS snapshot has been successfully created.
-
-==== Step 3: Schedule Automated Snapshots
-
-To automate recurring snapshots without manual intervention:
-
-. Navigate to *Automation Execution* → *Templates*
-. Select *Server Backup - VSS/Windows*
-. Click on the *Schedules* tab
-. Click *Create schedule*
-
-.Schedule Configuration
-image::win-shed.png[Windows Schedule Setup]
-
-===== Schedule Configuration Details:
-
-* *Schedule Name:* `5 Min Snappy`
-* *Description:* `Automated VSS Snaps`
-* *Start date/time:* Leave as default
-* *Time Zone:* Leave as default
-
-===== Frequency Settings:
-
-. Click *Next*
-. Set *Frequency* to `Minutely`
-. Set *Interval* to `5`
-. Select *Save rule* and click *Next*
-. Skip exceptions (click *Next*)
-. Click *Finish*
-
-.Schedule Details
-image::shed-details.png[Schedule Configuration Details]
-
-Perfect! Your automated snapshot schedule is now configured.
-
-== Code Reference
-
-=== XFS Backup Automation
-
-Here's the key Ansible code used for XFS backups:
+What am I automating?
 
 [source,yaml]
 ----
-tasks:
-  - name: Check if xfsdump is installed
-    ansible.builtin.yum:
-      name: xfsdump
-      state: present
-    when: ansible_facts.os_family == "RedHat"
-
-  - name: Ensure the backup directory exists
-    ansible.builtin.file:
-      path: "{{ backup_file | dirname }}"
-      state: directory
-      mode: '0755'
-
-  - name: Perform xfsdump backup
-    ansible.builtin.command:
-      cmd: >
-        xfsdump -l 0 -L {{ backup_label }}
-        -f {{ backup_file }} {{ xfs_mount_point }}
-    register: backup_result
-    ignore_errors: no
-
-  - name: Verify xfsdump success
-    ansible.builtin.debug:
-      msg: "Backup completed successfully: {{ backup_result.stdout }}"
+---
+- name: configure network devices
+  hosts: network
+  become: yes
 ----
 
-== Next Steps
+*What are they?*
 
-You've successfully completed the backup automation exercises! You now have:
+- _Top level specification for a group of tasks._
 
-* ✅ Automated Linux XFS backups
-* ✅ Windows VSS snapshots
-* ✅ Scheduled recurring snapshots
-* ✅ Verification procedures for both systems
+  Will tell that play which hosts it will execute on and control behavior such as fact gathering or privilege level.
 
-This foundation in read-only automation tasks will help you build confidence for more complex automation scenarios in the future.
+- _Building blocks for playbooks_
+
+  Multiple plays can exist within an Ansible playbook
+
+=== Ansible Modules
+
+_The "tools in the toolkit"_
+
+----
+    - name: ensure that the desired snmp strings are present
+      cisco.ios.config:
+        commands:
+          - snmp-server community ansible-public RO
+          - snmp-server community ansible-private RW
+----
+
+*What are they?*
+
+Parametrized components with internal logic, representing a single step to be done.
+The modules "do" things in Ansible.
+
+*Language*
+
+=== Ansible Plugins
+
+*What are they?*
+Plugins are pieces of code that augment
+Ansible's core functionality. Ansible uses a plugin architecture to enable a rich, flexible, and expandable feature set.
+
+{{ some_variable | `to_nice_json` }} +
+{{ some_variable | `to_nice_yaml` }}
+
+=== Ansible Inventory
+
+*What are they?*
+
+List of systems in your infrastructure that automation is executed against
+
+----
+[web]
+webserver1.example.com
+webserver2.example.com
+
+[db]
+dbserver1.example.com
+
+[switches]
+leaf01.internal.com
+leaf02.internal.com
+----
+
+=== Ansible Roles
+
+[source,yaml]
+----
+---
+- name: install and start apache
+  hosts: network
+  roles:
+    - network.toolkit.backup
+----
+
+*What are they?*
+
+Group your tasks and variables of your automation in a reusable structure. Write roles once, and share them with others who have similar challenges in front of them.
+
+=== Ansible Content Collections
+
+_Simplified and consistent content delivery_
+
+*What are they?*
+
+Collections are a directory structure containing automation content such as:
+- Modules
+- Playbooks
+- Roles
+- Plugins
+- Docs
+- Tests
+
+
+=== Lets get started
+
+That is the end of of your lab briefing!
+
+Once the lab is setup you can click the Green start button image:https://github.com/IPvSean/pictures_for_github/blob/master/start_button.png?raw=true[width=100px,align=left] in the bottom right corner of this window.
+
+
+== Step 1 - Examine Ansible Playbook
+
+Open the `playbook.yml` in the code-server tab.
+
+We will explore in detail the components of an Ansible Playbook in the next exercise. It is suffice for now to see that this playbook will run two Cisco IOS-XE commands:
+
+----
+snmp-server community ansible-public RO
+snmp-server community ansible-private RW
+----
+
+== Step 2 - Execute Ansible Playbook
+
+Open the terminal tab and run the following command:
+
+----
+ansible-navigator run playbook.yml --mode stdout
+----
+
+
+- `--mode stdout` - By default ansible-navigator will run in interactive mode. The default behavior can be modified by modifying the ansible-navigator.yml configuration file. As playbooks get longer and involve multiple hosts the interactive mode allows you to "zoom in" on data in real-time, filter it, and navigate between various Ansible components. Since this task only ran one task on one host the stdout is sufficient.
+
+== Step 3 - Verify configuration on router
+
+Login to the cisco device and run the show run command to check the configuration:
+----
+ssh cisco
+show running | i snmp
+----
+Output should be similar to the following:
+----
+snmp-server community ansible-public RO
+snmp-server community ansible-private RW
+----
