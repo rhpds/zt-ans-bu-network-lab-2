@@ -99,22 +99,28 @@ virtualmachines:
       runcmd:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
         - systemctl reload sshd
-  - name: "cisco"
-    image: "cisco8000v"
-    memory: "2G"
-    cores: 2
-    image_size: "30Gi"
+
+  - name: "c8000v"
+    image: "c8000v-rhdp-8g"
+    memory: "8G"
+    cores: "4"
+    image_size: "10Gi"
     tags:
-      - key: "AnsibleGroup"
-        value: "isolated"
+    - key: "AnsibleGroup"
+      value: "isolated"
     networks:
       - default
-    # userdata: |-
-    #   #cloud-config
-    #   user: rhel
-    #   password: ansible123!
-    #   chpasswd: { expire: False }  
-    #   runcmd:
-    #     - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
-    #     - systemctl reload sshd
-
+    cdroms:
+    - metadata:
+        name: "cisco-config"
+      spec:
+        source:
+          pvc:
+            name: "c8000v-rhdp-config"
+            namespace: cnv-images
+        pvc:
+          accessModes:
+          - ReadWriteMany
+          volumeMode: Block
+          resources:
+            requests:
