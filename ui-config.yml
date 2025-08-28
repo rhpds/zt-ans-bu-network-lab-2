@@ -12,12 +12,12 @@ antora:
       solveButton: false
 
 tabs:
-  - name: code-server
-    url: https://control-${guid}.${domain}/
+  - name: _>Code
+    url: https://control-${guid}.${domain}/?folder=/home/coder/project
     modules:
       - module-01
       - module-02
-    external: false
+    external: true
 
   # - name: Windows RDP
   #   url: https://windows-ironrdp-${guid}.${domain}/
