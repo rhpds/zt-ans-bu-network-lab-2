@@ -7,6 +7,8 @@ ingress:
   - protocol: TCP
     port: 443
   - protocol: TCP
+    port: 3000
+  - protocol: TCP
     port: 8080
 egress:
 - ports:
@@ -14,5 +16,7 @@ egress:
     port: 22
   - protocol: TCP
     port: 443
+  - protocol: TCP
+    port: 3000
   - protocol: TCP
     port: 8080
