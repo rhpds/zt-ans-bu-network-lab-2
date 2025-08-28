@@ -1,5 +1,3 @@
-:toc:
-:toc-placement: auto
 = Your first Network Ansible Playbook
 
 == For this challenge we will examine an already created Ansible Playbook

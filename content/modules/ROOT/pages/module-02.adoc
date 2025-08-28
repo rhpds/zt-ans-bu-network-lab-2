@@ -1,6 +1,3 @@
-:toc:
-:toc-placement: auto
-
 = Validate idempotency
 
 == The best playbooks are idempotent playbooks
