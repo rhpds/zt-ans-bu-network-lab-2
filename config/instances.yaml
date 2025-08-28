@@ -106,21 +106,22 @@ virtualmachines:
     cores: "4"
     image_size: "10Gi"
     tags:
-    - key: "AnsibleGroup"
-      value: "isolated"
+      - key: "AnsibleGroup"
+        value: "isolated"
     networks:
       - default
     cdroms:
-    - metadata:
-        name: "cisco-config"
-      spec:
-        source:
+      - metadata:
+          name: "cisco-config"
+        spec:
+          source:
+            pvc:
+              name: "c8000v-rhdp-config"
+              namespace: cnv-images
           pvc:
-            name: "c8000v-rhdp-config"
-            namespace: cnv-images
-        pvc:
-          accessModes:
-          - ReadWriteMany
-          volumeMode: Block
-          resources:
-            requests:
+            accessModes:
+            - ReadWriteMany
+            volumeMode: Block
+            resources:
+              requests:
+                storage: "20Mi"
