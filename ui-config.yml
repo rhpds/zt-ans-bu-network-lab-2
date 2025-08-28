@@ -17,6 +17,8 @@ tabs:
     external: false
     secondary_url: /wetty
     secondary_name: Terminal
+  - name: ">_ control"
+    url: /wetty
 
   # - name: Windows RDP
   #   url: https://windows-ironrdp-${guid}.${domain}/
