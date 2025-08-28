@@ -89,6 +89,7 @@ su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EO
     "files.exclude": {
         "**/.*": true
     }
+    "security.workspace.trust.enabled": false
 }
 EOL
 cat /home/$USER/.local/share/code-server/User/settings.json'

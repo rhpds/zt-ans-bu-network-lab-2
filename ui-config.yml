@@ -12,7 +12,7 @@ antora:
 
 tabs:
   - name: "VS Code"
-    url: https://vscode-${guid}.${domain}
+    url: https://vscode-${guid}.${domain}/?folder=/home/rhel
     external: false
   - name: "TERMINAL"
     url: /wetty_vscode
