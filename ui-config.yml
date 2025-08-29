@@ -14,7 +14,7 @@ antora:
       solveButton: true
 
 tabs:
-  - name: "VS Code"
+  - name: "code-server"
     url: https://vscode-${guid}.${domain}/?folder=/home/rhel
     external: false
   - name: "TERMINAL"
