@@ -77,7 +77,7 @@ su - $USER -c 'cat > /home/rhel/debug.yml << EOF
         msg: "print to terminal"
 
 EOF
-cat > /home/rhel/debug.yml'
+cat /home/rhel/debug.yml'
 
 
 tee /home/rhel/hosts << EOF
