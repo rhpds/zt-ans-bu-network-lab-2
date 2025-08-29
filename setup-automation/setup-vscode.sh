@@ -1,34 +1,51 @@
 #!/bin/bash
+
+USER=rhel
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                        Host subscription with satellite                       ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
 curl -k  -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt
 update-ca-trust
 rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm
-
 subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}
 setenforce 0
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                        Setup Sudoers                                          ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
 echo "%rhel ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/rhel_sudoers
 chmod 440 /etc/sudoers.d/rhel_sudoers
+
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                        Setup SSH key                                          ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
 sudo -u rhel mkdir -p /home/rhel/.ssh
 sudo -u rhel chmod 700 /home/rhel/.ssh
 sudo -u rhel rm -rf /home/rhel/.ssh/id_rsa*
 sudo -u rhel ssh-keygen -t rsa -b 4096 -C "rhel@$(hostname)" -f /home/rhel/.ssh/id_rsa -N ""
 sudo -u rhel chmod 600 /home/rhel/.ssh/id_rsa*
 
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                         Reconfigure VS codeserver                             ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
 systemctl stop firewalld
 systemctl stop code-server
 mv /home/rhel/.config/code-server/config.yaml /home/rhel/.config/code-server/config.bk.yaml
 
-tee /home/rhel/.config/code-server/config.yaml << EOF
+su - $USER -c 'cat >/home/rhel/.config/code-server/config.yaml << EOF
 bind-addr: 0.0.0.0:8080
 auth: none
 cert: false
-EOF
+EOF'
 
 systemctl start code-server
 
-USER=rhel
-
+# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║                         Setup lab assets                                      ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
 # Write a new playbook to create a template from above playbook
-tee /home/rhel/playbook.yml << EOF
+su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
 ---
 - name: snmp ro/rw string configuration
   hosts: cisco
@@ -43,9 +60,10 @@ tee /home/rhel/playbook.yml << EOF
           - snmp-server community ansible-private RW
 
 EOF
+cat /home/rhel/playbook.yml'
 
 # Write a new playbook to create a template from above playbook
-tee /home/rhel/debug.yml << EOF
+su - $USER -c 'cat > /home/rhel/debug.yml << EOF
 ---
 - name: print debug
   hosts: localhost
@@ -59,37 +77,39 @@ tee /home/rhel/debug.yml << EOF
         msg: "print to terminal"
 
 EOF
+cat > /home/rhel/debug.yml'
 
-# chown above file
-sudo chown rhel:rhel /home/rhel/playbook.yml
-
-sudo chown rhel:rhel /home/rhel/debug.yml
 
 tee /home/rhel/hosts << EOF
-cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
+cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=ansible
 vscode ansible_user=rhel ansible_password=ansible123!
 EOF
 
 # set vscode default settings
 su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
 {
-    "git.ignoreLegacyWarning": true,
-    "window.menuBarVisibility": "visible",
-    "git.enableSmartCommit": true,
-    "workbench.tips.enabled": false,
-    "workbench.startupEditor": "readme",
-    "telemetry.enableTelemetry": false,
-    "search.smartCase": true,
-    "git.confirmSync": false,
-    "workbench.colorTheme": "Solarized Dark",
-    "update.showReleaseNotes": false,
-    "update.mode": "none",
-    "ansible.ansibleLint.enabled": false,
-    "ansible.ansible.useFullyQualifiedCollectionNames": true,
-    "files.exclude": {
-        "**/.*": true
-    }
-    "security.workspace.trust.enabled": false
+  "git.ignoreLegacyWarning": true,
+  "window.menuBarVisibility": "visible",
+  "git.enableSmartCommit": true,
+  "workbench.tips.enabled": false,
+  "workbench.startupEditor": "readme",
+  "telemetry.enableTelemetry": false,
+  "search.smartCase": true,
+  "git.confirmSync": false,
+  "workbench.colorTheme": "Solarized Dark",
+  "update.showReleaseNotes": false,
+  "update.mode": "none",
+  "ansible.ansibleLint.enabled": false,
+  "ansible.ansible.useFullyQualifiedCollectionNames": true,
+  "files.associations": {
+      "*.yml": "ansible",
+      "*.yaml": "ansible"
+  },
+  "files.exclude": {
+    "**/.*": true
+  },
+  "window.autoDetectColorScheme": true,
+  "security.workspace.trust.enabled": false
 }
 EOL
 cat /home/$USER/.local/share/code-server/User/settings.json'

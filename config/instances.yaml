@@ -116,7 +116,7 @@ virtualmachines:
         spec:
           source:
             pvc:
-              name: "c8000v-rhdp-config"
+              name: "ans-bu-cisco-rhdp-config"
               namespace: cnv-images
           pvc:
             accessModes:
