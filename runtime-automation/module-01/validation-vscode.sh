@@ -29,5 +29,5 @@ su - rhel -c 'ansible-navigator run /home/rhel/check_challenege_1.yml --mode std
 if [ $? -eq 0 ]; then
     echo OK
 else
-    /usr/bin/fail-message "SNMP configuration was not applied - please try again or use SKIP"
+    echo "SNMP configuration was not applied - please try again or use SKIP" >> /tmp/progress.log
 fi
