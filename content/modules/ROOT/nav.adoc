@@ -1,2 +1,0 @@
-* xref:module-01.adoc[1. Your first Network Ansible Playbook]
-* xref:module-02.adoc[2. Validate idempotency]

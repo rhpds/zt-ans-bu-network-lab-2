@@ -1,19 +1,9 @@
+---
 name: modules
-title: Exercises
 version: master
-nav:
-  - modules/ROOT/nav.adoc
 
 asciidoc:
   attributes:
     lab_name: "Network automation basics: First playbook"
     release-version: master
     page-pagination: true
-    my_var: "foo"
-    guid: my-guid
-    ssh_user: devops
-    ssh_password: devops
-    ssh_command: ssh someone@example.com
-    page-links:
-    - url: https://redhat.com
-      text: Red Hat
