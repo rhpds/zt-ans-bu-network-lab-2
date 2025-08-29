@@ -3,7 +3,7 @@ antora:
   name: modules
   dir: www
   modules:
-    - name: introduction
+    - name: index
       label: "Introduction"
       solveButton: false
     - name: module-01
