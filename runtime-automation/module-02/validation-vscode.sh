@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tee /home/rhel/check_challenege_1.yml << EOF
+tee /home/rhel/check_challenege_2.yml << EOF
 ---
 - name: snmp ro/rw string configuration
   hosts: cisco
@@ -23,9 +23,9 @@ tee /home/rhel/check_challenege_1.yml << EOF
       when: snmpstatus.changed == True
 EOF
 
-sudo chown rhel:rhel /home/rhel/check_challenege_1.yml
+sudo chown rhel:rhel /home/rhel/check_challenege_2.yml
 
-su - rhel -c 'ansible-navigator run /home/rhel/check_challenege_1.yml --mode stdout'
+su - rhel -c 'ansible-navigator run /home/rhel/check_challenege_2.yml --mode stdout'
 
 if [ $? -eq 0 ]; then
     echo OK
