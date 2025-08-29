@@ -80,10 +80,11 @@ EOF
 cat /home/rhel/debug.yml'
 
 
-tee /home/rhel/hosts << EOF
-cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=ansible
+su - $USER -c 'cat > /home/rhel/hosts << EOF
+cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
 vscode ansible_user=rhel ansible_password=ansible123!
 EOF
+cat  /home/rhel/hosts'
 
 # set vscode default settings
 su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
