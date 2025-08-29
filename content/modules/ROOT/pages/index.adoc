@@ -16,5 +16,3 @@ The lab objective is to use Ansible Automation to update the configuration of a 
 - executing an Ansible Playbook on the command line using the ansible-navigator command
 - check mode (the `--check` parameter)
 - verbose mode (the `--verbose` or -v parameter)
-
-image:https://github.com/network-automation/networking-icons/blob/master/switches/switch_red_small.png?raw=true[]
