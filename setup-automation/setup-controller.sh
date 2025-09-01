@@ -243,34 +243,6 @@ vscode ansible_user=rhel ansible_password=ansible123!
 EOF
 cat  /home/rhel/hosts
 
-# set vscode default settings
-cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
-{
-  "git.ignoreLegacyWarning": true,
-  "window.menuBarVisibility": "visible",
-  "git.enableSmartCommit": true,
-  "workbench.tips.enabled": false,
-  "workbench.startupEditor": "readme",
-  "telemetry.enableTelemetry": false,
-  "search.smartCase": true,
-  "git.confirmSync": false,
-  "workbench.colorTheme": "Solarized Dark",
-  "update.showReleaseNotes": false,
-  "update.mode": "none",
-  "ansible.ansibleLint.enabled": false,
-  "ansible.ansible.useFullyQualifiedCollectionNames": true,
-  "files.associations": {
-      "*.yml": "ansible",
-      "*.yaml": "ansible"
-  },
-  "files.exclude": {
-    "**/.*": true
-  },
-  "window.autoDetectColorScheme": true,
-  "security.workspace.trust.enabled": false
-}
-EOL
-cat /home/$USER/.local/share/code-server/User/settings.json
 
 # set ansible-navigator default settings
 cat >/home/$USER/ansible-navigator.yml <<EOL
