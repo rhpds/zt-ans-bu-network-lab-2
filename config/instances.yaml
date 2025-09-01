@@ -128,18 +128,13 @@ virtualmachines:
           -----END CERTIFICATE-----
     userdata: |-
       #cloud-config
-      users:
-        - name: rhel
-          sudo: ALL=(ALL) NOPASSWD:ALL
-          groups: wheel
-          shell: /bin/bash
-          lock_passwd: false
-          plain_text_passwd: ansible123!
-
-      chpasswd:
-        expire: False
+      user: rhel
+      password: ansible123!
+      chpasswd: { expire: False }
       runcmd:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
+        - echo "rhel ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/rhel
+        - chmod 440 /etc/sudoers.d/rhel
         - systemctl reload sshd
 
   - name: "cisco"
