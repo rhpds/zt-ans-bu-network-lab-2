@@ -2,35 +2,19 @@
 
 USER=rhel
 
-# --------------------------------------------------------------
-# Host subscription with satellite
-# --------------------------------------------------------------
-curl -k  -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt
-update-ca-trust
-rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm
-subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}
-setenforce 0
 
 # --------------------------------------------------------------
 # Setup Sudoers 
-# --------------------------------------------------------------
-echo "%rhel ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/rhel_sudoers
-chmod 440 /etc/sudoers.d/rhel_sudoers
+# # --------------------------------------------------------------
+# echo "%rhel ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/rhel_sudoers
+# chmod 440 /etc/sudoers.d/rhel_sudoers
 
-# --------------------------------------------------------------
-# Setup SSH key
-# --------------------------------------------------------------
-sudo -u rhel mkdir -p /home/rhel/.ssh
-sudo -u rhel chmod 700 /home/rhel/.ssh
-sudo -u rhel rm -rf /home/rhel/.ssh/id_rsa*
-sudo -u rhel ssh-keygen -t rsa -b 4096 -C "rhel@$(hostname)" -f /home/rhel/.ssh/id_rsa -N ""
-sudo -u rhel chmod 600 /home/rhel/.ssh/id_rsa*
 
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
 # Write a new playbook to create a template from above playbook
-su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
+cat > /home/rhel/playbook.yml << EOF
 ---
 - name: setup controller for network use cases
   hosts: localhost
@@ -189,10 +173,10 @@ su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
             ansible_become_password: ansible123!
 
 EOF
-cat /home/rhel/playbook.yml'
+cat /home/rhel/playbook.yml
 
 # Write a new playbook to create a template from above playbook
-su - $USER -c 'cat > /home/rhel/debug.yml << EOF
+cat > /home/rhel/debug.yml << EOF
 ---
 - name: print debug
   hosts: localhost
@@ -206,10 +190,9 @@ su - $USER -c 'cat > /home/rhel/debug.yml << EOF
         msg: "print to terminal"
 
 EOF
-cat /home/rhel/debug.yml'
+cat /home/rhel/debug.yml
 
-
-su - $USER -c 'cat >/home/rhel/facts.yml <<EOF
+cat >/home/rhel/facts.yml <<EOF
 ---
 - name: Gather information from routers
   hosts: cisco
@@ -233,18 +216,18 @@ su - $USER -c 'cat >/home/rhel/facts.yml <<EOF
       ansible.builtin.debug:
         var: all_facts
 EOF
-cat /home/rhel/facts.yml'
+cat /home/rhel/facts.yml
 
 /usr/local/bin/ansible-playbook /home/rhel/playbook.yml
 
-su - $USER -c 'cat > /home/rhel/hosts << EOF
+cat > /home/rhel/hosts << EOF
 cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
 vscode ansible_user=rhel ansible_password=ansible123!
 EOF
-cat  /home/rhel/hosts'
+cat  /home/rhel/hosts
 
 # set vscode default settings
-su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
+cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
 {
   "git.ignoreLegacyWarning": true,
   "window.menuBarVisibility": "visible",
@@ -270,10 +253,10 @@ su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EO
   "security.workspace.trust.enabled": false
 }
 EOL
-cat /home/$USER/.local/share/code-server/User/settings.json'
+cat /home/$USER/.local/share/code-server/User/settings.json
 
 # set ansible-navigator default settings
-su - $USER -c 'cat >/home/$USER/ansible-navigator.yml <<EOL
+cat >/home/$USER/ansible-navigator.yml <<EOL
 ---
 ansible-navigator:
   ansible:
@@ -292,16 +275,16 @@ ansible-navigator:
     level: debug
 
 EOL
-cat /home/$USER/ansible-navigator.yml'
+cat /home/$USER/ansible-navigator.yml
 
 # Fixes an issue with podman that produces this error: "Error: error creating tmpdir: mkdir /run/user/1000: permission denied"
-su - $USER -c 'loginctl enable-linger $USER'
+loginctl enable-linger $USER
 
 # Creates playbook artifacts dir
-su - $USER -c 'mkdir /home/$USER/playbook-artifacts'
+mkdir /home/$USER/playbook-artifacts
 
 # Creates playbook artifacts dir
-su - $USER -c 'mkdir /home/$USER/.ssh'
+mkdir /home/$USER/.ssh
 
 cat >/home/rhel/.ssh/id_rsa <<EOF
 -----BEGIN OPENSSH PRIVATE KEY-----
@@ -357,7 +340,7 @@ EOF
 
 chmod 600 /home/rhel/.ssh/id_rsa
 
-sudo chown rhel:rhel /home/rhel/.ssh/id_rsa
+# sudo chown rhel:rhel /home/rhel/.ssh/id_rsa
 
 
 tee /home/rhel/.ssh/config << EOF
@@ -366,7 +349,7 @@ Host *
      User ansible
 EOF
 
-sudo chown rhel:rhel /home/rhel/.ssh/config
+# sudo chown rhel:rhel /home/rhel/.ssh/config
 
 tee /home/rhel/ansible.cfg << EOF
 [defaults]
