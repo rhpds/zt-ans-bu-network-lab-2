@@ -29,8 +29,8 @@ rm /tmp/create_sudoers_user.yml
 ## --------------------------------------------------------------
 ## Manage services
 ## --------------------------------------------------------------
-sudo systemctl stop systemd-tmpfiles-setup.service
-sudo systemctl disable systemd-tmpfiles-setup.service
+# sudo systemctl stop systemd-tmpfiles-setup.service
+# sudo systemctl disable systemd-tmpfiles-setup.service
 
 ## --------------------------------------------------------------
 ## Install ansible collections
@@ -274,9 +274,8 @@ cat  /home/rhel/hosts
 # fix podman issues
 loginctl enable-linger $USER
 # Pull network-ee latest
-su - $USER -c 'podman pull quay.io/acme_corp/network-ee'
-# Retrieve network-ee
-su - $USER -c 'podman pull quay.io/acme_corp/network-ee'
+# su - $USER -c 'podman pull quay.io/acme_corp/network-ee'
+
 # Creates playbook artifacts dir
 mkdir /home/$USER/playbook-artifacts
 
@@ -285,7 +284,7 @@ mkdir /home/$USER/playbook-artifacts
 # configure ssh
 # --------------------------------------------------------------
 # Copy private key
-cat >/root/.ssh/private_key <<EOF
+su - $USER -c 'cat >/root/.ssh/private_key <<EOF
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAgEAujxd5jdqF9YOsrZQDDX7Io907po4RHXqUT/lrQyVuwEhvmvH+2W5
@@ -336,14 +335,15 @@ aFIIYzdspdf1HRNMlT0DgqM6w7JfEuXaYh5NT2Fd6efOFand582Ylh6jZ/ogwg/h/6HArT
 BkWxaD0kAvZZAAAAGmFuc2libGUtbmV0d29ya0ByZWRoYXQuY29t
 -----END OPENSSH PRIVATE KEY-----
 EOF
+cat /root/.ssh/private_key'
 
-cat >/root/.ssh/config <<EOF
+su - $USER -c 'cat >/root/.ssh/config <<EOF
 Host *
      StrictHostKeyChecking no
      User ansible
      IdentityFile /root/.ssh/private_key
 EOF
-
+cat /root/.ssh/config'
 
 # Creates ssh dir
 mkdir /home/$USER/.ssh
