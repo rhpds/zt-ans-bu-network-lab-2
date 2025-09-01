@@ -90,42 +90,42 @@ virtualmachines:
         service: controller-https
         targetPort: 443
         tls: true
-        tls_termination: reencrypt
-        tls_destinationCACertificate: |
-          -----BEGIN CERTIFICATE-----
-          MIIF1jCCA76gAwIBAgIUe2W1Q9h3o224nkOx34exxp4t/14wDQYJKoZIhvcNAQEL
-          BQAwgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQIDA5Ob3J0aCBDYXJvbGluYTEQMA4G
-          A1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVkIEhhdDEQMA4GA1UECwwHQW5zaWJs
-          ZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0aW9uIFBsYXRmb3JtMB4XDTI1MDYx
-          MTIxMjk1MloXDTM1MDYwOTIxMjk1MlowgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQI
-          DA5Ob3J0aCBDYXJvbGluYTEQMA4GA1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVk
-          IEhhdDEQMA4GA1UECwwHQW5zaWJsZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0
-          aW9uIFBsYXRmb3JtMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArFQk
-          DUqYR85wHOf4COw9Kzi/A7g08my+x/HrQv3nrpI2k3Y5ch1hqYmKHJ5WZDzQkrTe
-          QV4klzz+NvNpBgfY8uwj3jfnZnx7hufxAJ/i24Iba3ssPSSrfZjLuuStQkkvuUDH
-          HQ7xtcDu6Tag3zUVJDa/YZc4z4/vpErXD73rrmIKL1SIFnl1yvrjlpxO568qrWlr
-          5fUmRGGTPpTJdb5asMrBF4YSDfCkcecAJSX2py9+bPooDM8evmazRoAt6zI6/NNr
-          1tl9V5gs7kklqBiO7zE72A6trrN7iFTTuOfG0JpStzlB8o42qwNb6X8PHuA1h5yl
-          ngcV5nMqbEFLWjfwFAUdiitVK+fzK6Aj9TQw1cu1Raoi229U2D1g3+uqcsbv1JAU
-          2l92DdCyFp9eWieUdhfvJiiNE0fQvGn83Q1jNYSQujN34O04Sj1sKsIrNn8H4fSf
-          U97VVyS4bxNrMFKycAS1sR73SF1rRuJoxn/Asofy2tKwKroSaWhVuMuuQ8qAPwZ6
-          2INRL2xv4mcOEldfOrPziTPAPFuvFGMvq0pxxLivTgzOCrobm/KEF/GBVDyrOIIp
-          08PmInk2CzDQhE2Kb7NRqBvDCzZY3ymbUJCs+jC+yD1RuRsSXAqh40RVvsITALq9
-          cOrkvVcXcMZv0xhmy4P4ML9EMGt66dNpBAs7BasCAwEAAaNCMEAwDgYDVR0PAQH/
-          BAQDAgIEMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFNBhFK8jR0jITYvx8XFw
-          Pn/ysLluMA0GCSqGSIb3DQEBCwUAA4ICAQAUcHGvSy6SCN9rpllHRVOHtXeyvJ5+
-          iGbEL+4ZBabFvsBQ09XwNsX+SMI1hz5dGhbwynNi9NacxL8JfGwlA/2y1/ie0fuy
-          A9HjJpJHV+gK61nmHzBoJOwVtpaFvwuoxeXHGgAausUgk5vCJddpZIwkRXwHpFq5
-          YtjwJ+Rld8mRm951dvO+6vFAsiE5BaMSN/uuV/MDj3Yx8GEwyRZbw/lozHSMt43d
-          zmt5cagh2dKwXDe62gbwpE6xjbC7qaU4lIFf52UEDLf4HOykDMRTWPxnxZUMW+vd
-          dMd+atPqKGwRBx10E37YEw0iPuTlNV138mnoxBEP+BnWQiyu/51hF52nBDmCNO5d
-          Iw75JJTriPbU3MH8APPaxaeDpCYpa0ptMJbr6ePauJmkf6e0eTTmAbbKEvbGS75d
-          TcYdxMQx9o0XTE0xiIaTf6zcIAukqScrlQflqVtZgwTK0PGlKAgrNdhBGAvX1TGA
-          BtDAy5SDjyI0Eq/+lumRaB531+AkzxI2GRKfEuiEyZHCjnFFDOG6USuSki78jA3x
-          vT2LNPmDbOd7H6gAi7XnjN2jC6JwNOFzAdBD9jAyQvVG6IBn0E5YK8dtYdxVozkW
-          EnnoC+ESiSzEWCewL9HQ3JJEaj94GUJkXY/DsIxUP1XJvljYmr7TDAwn0d8AiP9Z
-          jUlWl862ifqzUg==
-          -----END CERTIFICATE-----
+        # tls_termination: reencrypt
+        # tls_destinationCACertificate: |
+        #   -----BEGIN CERTIFICATE-----
+        #   MIIF1jCCA76gAwIBAgIUe2W1Q9h3o224nkOx34exxp4t/14wDQYJKoZIhvcNAQEL
+        #   BQAwgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQIDA5Ob3J0aCBDYXJvbGluYTEQMA4G
+        #   A1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVkIEhhdDEQMA4GA1UECwwHQW5zaWJs
+        #   ZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0aW9uIFBsYXRmb3JtMB4XDTI1MDYx
+        #   MTIxMjk1MloXDTM1MDYwOTIxMjk1MlowgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQI
+        #   DA5Ob3J0aCBDYXJvbGluYTEQMA4GA1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVk
+        #   IEhhdDEQMA4GA1UECwwHQW5zaWJsZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0
+        #   aW9uIFBsYXRmb3JtMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArFQk
+        #   DUqYR85wHOf4COw9Kzi/A7g08my+x/HrQv3nrpI2k3Y5ch1hqYmKHJ5WZDzQkrTe
+        #   QV4klzz+NvNpBgfY8uwj3jfnZnx7hufxAJ/i24Iba3ssPSSrfZjLuuStQkkvuUDH
+        #   HQ7xtcDu6Tag3zUVJDa/YZc4z4/vpErXD73rrmIKL1SIFnl1yvrjlpxO568qrWlr
+        #   5fUmRGGTPpTJdb5asMrBF4YSDfCkcecAJSX2py9+bPooDM8evmazRoAt6zI6/NNr
+        #   1tl9V5gs7kklqBiO7zE72A6trrN7iFTTuOfG0JpStzlB8o42qwNb6X8PHuA1h5yl
+        #   ngcV5nMqbEFLWjfwFAUdiitVK+fzK6Aj9TQw1cu1Raoi229U2D1g3+uqcsbv1JAU
+        #   2l92DdCyFp9eWieUdhfvJiiNE0fQvGn83Q1jNYSQujN34O04Sj1sKsIrNn8H4fSf
+        #   U97VVyS4bxNrMFKycAS1sR73SF1rRuJoxn/Asofy2tKwKroSaWhVuMuuQ8qAPwZ6
+        #   2INRL2xv4mcOEldfOrPziTPAPFuvFGMvq0pxxLivTgzOCrobm/KEF/GBVDyrOIIp
+        #   08PmInk2CzDQhE2Kb7NRqBvDCzZY3ymbUJCs+jC+yD1RuRsSXAqh40RVvsITALq9
+        #   cOrkvVcXcMZv0xhmy4P4ML9EMGt66dNpBAs7BasCAwEAAaNCMEAwDgYDVR0PAQH/
+        #   BAQDAgIEMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFNBhFK8jR0jITYvx8XFw
+        #   Pn/ysLluMA0GCSqGSIb3DQEBCwUAA4ICAQAUcHGvSy6SCN9rpllHRVOHtXeyvJ5+
+        #   iGbEL+4ZBabFvsBQ09XwNsX+SMI1hz5dGhbwynNi9NacxL8JfGwlA/2y1/ie0fuy
+        #   A9HjJpJHV+gK61nmHzBoJOwVtpaFvwuoxeXHGgAausUgk5vCJddpZIwkRXwHpFq5
+        #   YtjwJ+Rld8mRm951dvO+6vFAsiE5BaMSN/uuV/MDj3Yx8GEwyRZbw/lozHSMt43d
+        #   zmt5cagh2dKwXDe62gbwpE6xjbC7qaU4lIFf52UEDLf4HOykDMRTWPxnxZUMW+vd
+        #   dMd+atPqKGwRBx10E37YEw0iPuTlNV138mnoxBEP+BnWQiyu/51hF52nBDmCNO5d
+        #   Iw75JJTriPbU3MH8APPaxaeDpCYpa0ptMJbr6ePauJmkf6e0eTTmAbbKEvbGS75d
+        #   TcYdxMQx9o0XTE0xiIaTf6zcIAukqScrlQflqVtZgwTK0PGlKAgrNdhBGAvX1TGA
+        #   BtDAy5SDjyI0Eq/+lumRaB531+AkzxI2GRKfEuiEyZHCjnFFDOG6USuSki78jA3x
+        #   vT2LNPmDbOd7H6gAi7XnjN2jC6JwNOFzAdBD9jAyQvVG6IBn0E5YK8dtYdxVozkW
+        #   EnnoC+ESiSzEWCewL9HQ3JJEaj94GUJkXY/DsIxUP1XJvljYmr7TDAwn0d8AiP9Z
+        #   jUlWl862ifqzUg==
+        #   -----END CERTIFICATE-----
     userdata: |-
       #cloud-config
       user: rhel
