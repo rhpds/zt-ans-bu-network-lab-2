@@ -4,6 +4,6 @@ version: master
 
 asciidoc:
   attributes:
-    lab_name: "Network automation basics: First playbook"
+    lab_name: "Network automation: Backup and restore"
     release-version: master
     page-pagination: true

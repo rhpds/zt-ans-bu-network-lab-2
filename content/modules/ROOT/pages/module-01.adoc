@@ -1,121 +1,45 @@
-= Your first Network Ansible Playbook
+= Create a backup automation job template
 
-== For this challenge we will examine an already created Ansible Playbook
+== Lab 1 - Challenge 1
 
-=== Ansible Network Automation Basics
+*Learn how to create a backup job template in automation*
 
-The lab objective is to use Ansible Automation to update the configuration of a Cisco CSR router. This exercise will not create an Ansible Playbook, but use an existing one that has been provided.
+=== Lab 1 - Config Backup and Restore
 
-This exercise will cover:
+This lab will walk you through using Automation controller to automate backup and restore the configuration of a Cisco CSR (cloud services router) running IOS-XE.
 
-- examining an existing Ansible Playbook
-- executing an Ansible Playbook on the command line using the ansible-navigator command
-- check mode (the `--check` parameter)
-- verbose mode (the `--verbose` or -v parameter)
+Please click the Green Start button image:https://github.com/IPvSean/pictures_for_github/blob/master/start_button.png?raw=true[width=100px,align=left] on the bottom right corner if it did not already start provisioning.
 
-=== What makes up an Ansible Playbook?
+=== Lab Diagram
 
-image::https://github.com/IPvSean/pictures_for_github/blob/master/what_makes_up_playbook.png?raw=true[]
+The lab diagram for this demonstration is very simple.  There will be one Red Hat Enterprise Linux 8 device running automation controller.  It is directly connected to the management network for a Cisco CSR (cloud services router) running IOS-XE.
 
+image::https://github.com/IPvSean/pictures_for_github/blob/master/lab1-topo.png?raw=true[width=400,align=center]
 
-=== Ansible Plays
+=== Quick Automation Victories
 
-What am I automating?
+We know that network backup and restores are fairly uninteresting in the grand scheme of things, but they are a very common and ubiquitous use-case that all network operators will need. This provides an easy turn key use-case for network engineers to start their automation journey.
 
-[source,yaml]
-----
----
-- name: configure network devices
-  hosts: network
-  become: yes
-----
+=== Automation controller
 
-*What are they?*
+Automation controller provides a standardized way to define, operate, and delegate Ansible automation across the enterprise. It includes a Web User Interface (WebUI) that we will be using for this challenge.
 
-- _Top level specification for a group of tasks._
+=== Job Templates
 
-  Will tell that play which hosts it will execute on and control behavior such as fact gathering or privilege level.
+Everything in Automation controller revolves around the concept of a *Job Template*.  Job Templates allow Ansible Playbooks to be controlled, delegated and scaled for an organization.
 
-- _Building blocks for playbooks_
+Job templates also encourage the reuse of Ansible Playbook content and collaboration between teams.
 
-  Multiple plays can exist within an Ansible playbook
+A Job Template requires:
+- An *Inventory* to run the job against
+- A *Credential* to login to devices.
+- A *Project* which contains Ansible Playbooks
 
-=== Ansible Modules
+=== Challenge 1 - Creating a backup Job Template
 
-_The "tools in the toolkit"_
+For this challenge exercise you are going to create a Job Template in Automation controller.  We are going to use the Network Toolkit Collection (https://github.com/network-automation/toolkit) that contains multi-vendor playbooks for Backup, restore and more.
 
-----
-    - name: ensure that the desired snmp strings are present
-      cisco.ios.config:
-        commands:
-          - snmp-server community ansible-public RO
-          - snmp-server community ansible-private RW
-----
-
-*What are they?*
-
-Parametrized components with internal logic, representing a single step to be done.
-The modules "do" things in Ansible.
-
-*Language*
-
-=== Ansible Plugins
-
-*What are they?*
-Plugins are pieces of code that augment
-Ansible's core functionality. Ansible uses a plugin architecture to enable a rich, flexible, and expandable feature set.
-
-{{ some_variable | `to_nice_json` }} +
-{{ some_variable | `to_nice_yaml` }}
-
-=== Ansible Inventory
-
-*What are they?*
-
-List of systems in your infrastructure that automation is executed against
-
-----
-[web]
-webserver1.example.com
-webserver2.example.com
-
-[db]
-dbserver1.example.com
-
-[switches]
-leaf01.internal.com
-leaf02.internal.com
-----
-
-=== Ansible Roles
-
-[source,yaml]
-----
----
-- name: install and start apache
-  hosts: network
-  roles:
-    - network.toolkit.backup
-----
-
-*What are they?*
-
-Group your tasks and variables of your automation in a reusable structure. Write roles once, and share them with others who have similar challenges in front of them.
-
-=== Ansible Content Collections
-
-_Simplified and consistent content delivery_
-
-*What are they?*
-
-Collections are a directory structure containing automation content such as:
-- Modules
-- Playbooks
-- Roles
-- Plugins
-- Docs
-- Tests
-
+The *credentials* (username and password), *inventory* (a single Cisco router) and *project* (the network toolkit repository listed above) are already added.  We simply need to tie them together into a simple re-usable Job Template for our organization to use.
 
 === Lets get started
 
@@ -123,38 +47,55 @@ That is the end of of your lab briefing!
 
 Once the lab is setup you can click the Green start button image:https://github.com/IPvSean/pictures_for_github/blob/master/start_button.png?raw=true[width=100px,align=left] in the bottom right corner of this window.
 
+For this exercise we are going to create an automation job on Automation controller
 
-== Step 1 - Examine Ansible Playbook
+=== Login to automation controller
 
-Open the `playbook.yml` in the code-server tab.
+To login to automation controller select the `Automation controller WebUI` tab at the top of your screen.
 
-We will explore in detail the components of an Ansible Playbook in the next exercise. It is suffice for now to see that this playbook will run two Cisco IOS-XE commands:
+Login with the following credentials:
 
-----
-snmp-server community ansible-public RO
-snmp-server community ansible-private RW
-----
+username: `admin` +
+password: `ansible123!`
 
-== Step 2 - Execute Ansible Playbook
+=== Step 1 - Create an automation job
 
-Open the terminal tab and run the following command:
+- Navigate to *Job Templates* by clicking on *Templates* found under Resources on the left navigation menu. image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.png?raw=true[]
+- You will see a list of *Job Templates*.  Job templates encourage the reuse of Ansible playbook content and collaboration between teams.
+- Click the blue Add button and select *Add job template*
+- Assign the following values
 
-----
-ansible-navigator run playbook.yml --mode stdout
-----
+|===
+|Name |Value
 
+|Name
+|`Network Automation - Backup`
 
-- `--mode stdout` - By default ansible-navigator will run in interactive mode. The default behavior can be modified by modifying the ansible-navigator.yml configuration file. As playbooks get longer and involve multiple hosts the interactive mode allows you to "zoom in" on data in real-time, filter it, and navigate between various Ansible components. Since this task only ran one task on one host the stdout is sufficient.
+|Job Type
+|`Run`
 
-== Step 3 - Verify configuration on router
+|Inventory
+|`Network Inventory`
 
-Login to the cisco device and run the show run command to check the configuration:
-----
-ssh cisco
-show running | i snmp
-----
-Output should be similar to the following:
-----
-snmp-server community ansible-public RO
-snmp-server community ansible-private RW
-----
+|Project
+|`Network Toolkit`
+
+|Execution Environment
+|`Default execution environment`
+
+|Playbook
+|`playbooks/network_backup.yml`
+
+|Credentials +
+*NOTE:* there are two credentials
+|* `Network Credential`
+* `AAP controller credential`
+|===
+
+To find the `AAP controller credential` change the *Selected Category* to `Red Hat Ansible Automation Platform`
+
+- Click the blue *Save* button to save your job template.
+
+=== Step 2 - Verify
+
+Click the Green `Check` button below to verify the job template was created.

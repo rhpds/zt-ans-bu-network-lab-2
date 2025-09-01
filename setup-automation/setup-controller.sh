@@ -27,37 +27,143 @@ sudo -u rhel ssh-keygen -t rsa -b 4096 -C "rhel@$(hostname)" -f /home/rhel/.ssh/
 sudo -u rhel chmod 600 /home/rhel/.ssh/id_rsa*
 
 # --------------------------------------------------------------
-# Reconfigure VS codeserver
-# --------------------------------------------------------------
-systemctl stop firewalld
-systemctl stop code-server
-mv /home/rhel/.config/code-server/config.yaml /home/rhel/.config/code-server/config.bk.yaml
-
-su - $USER -c 'cat >/home/rhel/.config/code-server/config.yaml << EOF
-bind-addr: 0.0.0.0:8080
-auth: none
-cert: false
-EOF'
-
-systemctl start code-server
-
-# --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
 # Write a new playbook to create a template from above playbook
 su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
 ---
-- name: snmp ro/rw string configuration
-  hosts: cisco
-  gather_facts: no
+- name: setup controller for network use cases
+  hosts: localhost
+  gather_facts: true
+  become: true
+  vars:
+
+    username: admin
+    admin_password: ansible123!
 
   tasks:
 
-    - name: ensure that the desired snmp strings are present
-      cisco.ios.config:
-        commands:
-          - snmp-server community ansible-public RO
-          - snmp-server community ansible-private RW
+    - name: ensure controller is online and working
+      uri:
+        url: https://localhost/api/v2/ping/
+        method: GET
+        user: "{{ username }}"
+        password: "{{ admin_password }}"
+        validate_certs: false
+        force_basic_auth: true
+      register: controller_online
+      until: controller_online is success
+      delay: 3
+      retries: 5
+
+    - name: create inventory
+      awx.awx.inventory:
+        name: "Network Inventory"
+        organization: "Default"
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+      register: workshop_inventory
+      until: workshop_inventory is success
+      delay: 3
+      retries: 5
+
+    - name: Add cisco host
+      awx.awx.host:
+        name: cisco
+        description: "ios-xe csr running on GCP"
+        inventory: "Network Inventory"
+        state: present
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+        variables:
+            ansible_network_os: ios
+            ansible_user: ansible
+            ansible_connection: network_cli
+            ansible_become: true
+            ansible_become_method: enable
+
+    - name: Add backup server host
+      awx.awx.host:
+        name: "backup-server"
+        description: "this server is where we backup network configuration"
+        inventory: "Network Inventory"
+        state: present
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+        variables:
+            note: in production these passwords would be encrypted in vault
+            ansible_user: rhel
+            ansible_password: ansible123!
+            ansible_host: "{{ ansible_default_ipv4.address }}"
+            ansible_become_password: ansible123!
+
+    - name: Add group
+      awx.awx.group:
+        name: "network"
+        description: "Network Group"
+        inventory: "Network Inventory"
+        state: present
+        validate_certs: false      
+        hosts:
+          - cisco
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+
+    - name: Add network machine credential
+      awx.awx.credential:
+        name: "Network Credential"
+        organization: "Default"
+        credential_type: Machine
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+        inputs:
+          ssh_key_data: "{{ lookup('file', '/root/.ssh/private_key') }}"
+
+    - name: Add controller credential
+      awx.awx.credential:
+        name: "AAP controller credential"
+        organization: "Default"
+        credential_type: Red Hat Ansible Automation Platform
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+        inputs:
+          host: "{{ ansible_default_ipv4.address }}"
+          password: "ansible123!"
+          username: "admin"
+          verify_ssl: false
+
+    - name: Add project
+      awx.awx.project:
+        name: "Network Toolkit"
+        scm_url: "https://github.com/network-automation/toolkit"
+        scm_type: git
+        organization: "Default"
+        scm_update_on_launch: False
+        scm_update_cache_timeout: 60
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
+        validate_certs: false
+
+    - name: Add EE to the controller instance
+      awx.awx.execution_environment:
+        name: "network workshop execution environment"
+        image: "quay.io/acme_corp/network-ee:aap24b"
+        validate_certs: false
+        controller_username: "{{ username }}"
+        controller_password: "{{ admin_password }}"
+        controller_host: "https://{{ ansible_host }}"
 
 EOF
 cat /home/rhel/playbook.yml'

@@ -1,18 +1,19 @@
-:lab_name: Network automation basics: First playbook
+:lab_name: Network automation: Backup and restore
 
 
 = image:https://github.com/network-automation/networking-icons/blob/master/switches/switch_red_small.png?raw=true[] {lab_name}
 
+== Learn how to perform network configurations and backups using Red Hat Ansible
 
-Learn the fundamentals of Red Hat Ansible Automation Platform for network automation using ansible-navigator.
 
-== Ansible Network Automation Basics
+=== Overview
 
-The lab objective is to use Ansible Automation to update the configuration of a Cisco CSR router. This exercise will not create an Ansible Playbook, but use an existing one that has been provided.
+We know that network backup and restores are fairly uninteresting in the grand scheme of things, but they are a very common and ubiquitous use-case that all network operators will need. This provides an easy turn key use-case for network engineers to start their automation journey.
 
-.*This exercise will cover:*
 
-- examining an existing Ansible Playbook
-- executing an Ansible Playbook on the command line using the ansible-navigator command
-- check mode (the `--check` parameter)
-- verbose mode (the `--verbose` or -v parameter)
+image::https://github.com/IPvSean/pictures_for_github/blob/master/lab1-overview.png?raw=true[]
+
+=== First steps towards network as code
+
+When network operators realize a simple playbook, that is just a few lines of YAML, can be run from their laptop across hundreds of routers and switches, they will get hooked on automation and see infinite possibilities.
+
