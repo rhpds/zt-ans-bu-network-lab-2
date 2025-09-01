@@ -78,16 +78,16 @@ virtualmachines:
     networks:
       - default
     services:
-      - name: control-https
+      - name: controller-https
         ports:
           - port: 443
             protocol: TCP
             targetPort: 443
-            name: control-https
+            name: controller-https
     routes:
-      - name: control-https
-        host: control
-        service: control-https
+      - name: controller-https
+        host: controller
+        service: controller-https
         targetPort: 443
         tls: true
         tls_termination: reencrypt
@@ -128,9 +128,16 @@ virtualmachines:
           -----END CERTIFICATE-----
     userdata: |-
       #cloud-config
-      user: rhel
-      password: ansible123!
-      chpasswd: { expire: False }
+      users:
+        - name: rhel
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: wheel
+          shell: /bin/bash
+          lock_passwd: false
+          plain_text_passwd: ansible123!
+
+      chpasswd:
+        expire: False
       runcmd:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
         - systemctl reload sshd
