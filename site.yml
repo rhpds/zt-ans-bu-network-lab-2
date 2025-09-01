@@ -1,6 +1,6 @@
 ---
 site:
-  title: "Network automation: Backup and restore"
+  title: "Network automation: Infrastructure visibility"
   url: https://redhat-scholars.github.io/course-template
   start_page: modules::index.adoc
 

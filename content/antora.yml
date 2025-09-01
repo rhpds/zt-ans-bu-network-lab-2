@@ -4,6 +4,6 @@ version: master
 
 asciidoc:
   attributes:
-    lab_name: "Network automation: Backup and restore"
+    lab_name: "Network automation: Infrastructure visibility"
     release-version: master
     page-pagination: true

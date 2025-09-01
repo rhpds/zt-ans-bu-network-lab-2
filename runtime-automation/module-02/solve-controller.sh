@@ -1,43 +1,32 @@
 #!/bin/bash
 
-# ansible-playbook /tmp/setup-scripts/network-lab-1/solution_challenge_2.yml
-
 tee /home/rhel/solve_challenege_2.yml << EOF
 ---
-- name: solve challenge 2
+- name: solve lab2 challenge 2
   hosts: localhost
   gather_facts: false
   become: true
   tasks:
-
-    - name: Create network backup job template
+    - name: Create network report job template
       awx.awx.job_template:
-        name: "Network Automation - Backup"
+        name: "Network Automation - Report"
         job_type: "run"
         organization: "Default"
         inventory: Network Inventory
         project: "Network Toolkit"
-        playbook: "playbooks/network_backup.yml"
+        playbook: "playbooks/network_report.yml"
         credentials:
           - "Network Credential"
-          - "AAP controller credential"
         state: "present"
-        extra_vars:
-          restore_inventory: "Network Inventory"
-          restore_project: "Network Toolkit"
-          restores_playbook: "playbooks/network_restore.yml"
-          restore_credential: "Network Credential"
         controller_config_file: "/tmp/setup-scripts/controller.cfg"
 
-    - name: Launch Network Automation - Backup
+    - name: Launch network report job
       awx.awx.job_launch:
-        job_template: "Network Automation - Backup"
+        job_template: "Network Automation - Report"
         controller_config_file: "/tmp/setup-scripts/controller.cfg"
-      register: job
-
-
 EOF
 
 sudo chown rhel:rhel /home/rhel/solve_challenege_2.yml
 
 su - rhel -c 'ansible-playbook /home/rhel/solve_challenege_2.yml'
+

@@ -40,10 +40,15 @@ su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
 
     username: admin
     admin_password: ansible123!
+    login: &login
+      controller_username: "{{ username }}"
+      controller_password: "{{ admin_password }}"
+      controller_host: "https://{{ ansible_host }}"
+      validate_certs: false
 
   tasks:
 
-    - name: ensure controller is online and working
+    - name: ensure tower/controller is online and working
       uri:
         url: https://localhost/api/v2/ping/
         method: GET
@@ -55,6 +60,18 @@ su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
       until: controller_online is success
       delay: 3
       retries: 5
+
+    - name: set base url
+      awx.awx.settings:
+        name: AWX_COLLECTIONS_ENABLED
+        value: "false"
+        <<: *login
+
+    - name: Add EE to the controller instance
+      awx.awx.execution_environment:
+        name: "Network Execution Environment"
+        image: quay.io/acme_corp/network-ee
+        <<: *login
 
     - name: create inventory
       awx.awx.inventory:
@@ -75,13 +92,11 @@ su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
         description: "ios-xe csr running on GCP"
         inventory: "Network Inventory"
         state: present
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
+        <<: *login
         variables:
             ansible_network_os: ios
             ansible_user: ansible
+            ansible_host: "cisco"
             ansible_connection: network_cli
             ansible_become: true
             ansible_become_method: enable
@@ -154,16 +169,24 @@ su - $USER -c 'cat > /home/rhel/playbook.yml << EOF
         controller_username: "{{ username }}"
         controller_password: "{{ admin_password }}"
         controller_host: "https://{{ ansible_host }}"
-        validate_certs: false
+        validate_certs: false  
 
-    - name: Add EE to the controller instance
-      awx.awx.execution_environment:
-        name: "network workshop execution environment"
-        image: "quay.io/acme_corp/network-ee:aap24b"
-        validate_certs: false
+    - name: Add ansible-1 server host
+      awx.awx.host:
+        name: "ansible-1"
+        description: "this is the report server"
+        inventory: "Network Inventory"
+        state: present
         controller_username: "{{ username }}"
         controller_password: "{{ admin_password }}"
         controller_host: "https://{{ ansible_host }}"
+        validate_certs: false      
+        variables:
+            note: in production these passwords would be encrypted in vault
+            ansible_user: rhel
+            ansible_password: ansible123!
+            ansible_host: "{{ ansible_default_ipv4.address }}"
+            ansible_become_password: ansible123!
 
 EOF
 cat /home/rhel/playbook.yml'
@@ -185,6 +208,34 @@ su - $USER -c 'cat > /home/rhel/debug.yml << EOF
 EOF
 cat /home/rhel/debug.yml'
 
+
+su - $USER -c 'cat >/home/rhel/facts.yml <<EOF
+---
+- name: Gather information from routers
+  hosts: cisco
+  gather_facts: false
+
+  tasks:
+    - name: Gather router facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+      register: all_facts
+
+    - name: Display version
+      ansible.builtin.debug:
+        msg: "The IOS version is: {{ ansible_net_version }}"
+
+    - name: Display serial number
+      ansible.builtin.debug:
+        msg: "The serial number is:{{ ansible_net_serialnum }}"
+
+    - name: Display all facts
+      ansible.builtin.debug:
+        var: all_facts
+EOF
+cat /home/rhel/facts.yml'
+
+/usr/local/bin/ansible-playbook /home/rhel/playbook.yml
 
 su - $USER -c 'cat > /home/rhel/hosts << EOF
 cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!

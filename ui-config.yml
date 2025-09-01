@@ -10,10 +10,7 @@ antora:
       label: "create-network-backup-job"
       solveButton: true
     - name: module-02
-      label: "backup-job"
-      solveButton: true
-    - name: module-03
-      label: "restore-network-automation"
+      label: "networkreport-job"
       solveButton: true
 
 tabs:

@@ -1,19 +1,23 @@
-:lab_name: Network automation: Backup and restore
-
+:lab_name: Network automation: Infrastructure visibility
 
 = image:https://github.com/network-automation/networking-icons/blob/master/switches/switch_red_small.png?raw=true[] {lab_name}
 
-== Learn how to perform network configurations and backups using Red Hat Ansible
+== Overview
 
+Infrastructure Visibility is the ability to retrieve information from network devices and quickly gain accurate information and insights to the configuration and state of network devices. In many organizations the running configuration is the "source of truth" which means that whenever there is a problem the first few steps are performing various show commands and looking at the configuration on the box.  In fact, when opening a ticket with most network vendors, they will use scripts or aliases to simply dump every show command and output they can because they don't trust network diagrams, IPAM (IP addressmanagement) tools or even the network administrator who opened the issue.
 
-=== Overview
+image::https://github.com/IPvSean/pictures_for_github/blob/master/infrastructure_awareness.png?raw=true[]
 
-We know that network backup and restores are fairly uninteresting in the grand scheme of things, but they are a very common and ubiquitous use-case that all network operators will need. This provides an easy turn key use-case for network engineers to start their automation journey.
+== Dynamic Documentation
 
+Red Hat Ansible Automation Platform allows you to quickly transform network configuration and network device state into structured data, transform that structured data into whatever output you want.  For example in this lab we will transform the output into a simple HTML webiste.  This concept is commonly referred to as **Dynamic Documentation** and can be used in many different uses cases.
 
-image::https://github.com/IPvSean/pictures_for_github/blob/master/lab1-overview.png?raw=true[]
+== Why is this important?
 
-=== First steps towards network as code
+This is an excellent beginning use-case for network operators because it can add increasingly incremental value as you learn Ansible.
 
-When network operators realize a simple playbook, that is just a few lines of YAML, can be run from their laptop across hundreds of routers and switches, they will get hooked on automation and see infinite possibilities.
+**Infrastructure Awareness**
+  - Allows network operators to understand and audit their network
+  - Read-only and requires no production configuration change.
+  - Is highly configurable.  Once you have structured data you can transform network devices into websites, markdown files or even upload the data into an ITSM like ServiceNow.
 
