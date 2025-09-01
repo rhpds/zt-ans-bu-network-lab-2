@@ -5,6 +5,6 @@ tower-cli login admin --password ansible123!
 
 
 if ! tower-cli job_template list -f json | jq -e '.results[] | select(.name | match("Network Automation - Report";"i"))'; then
-    fail-message "You have not launched the 'Network Automation - Report' job template"
+    echo "You have not launched the 'Network Automation - Report' job template"
     exit 1
 fi
