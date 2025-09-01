@@ -71,7 +71,7 @@ virtualmachines:
     cores: 4
     image_size: "30Gi"
     disk_type: "scsi"
-    bootloader: "efi"
+    # bootloader: "efi"
     tags:
       - key: "AnsibleGroup"
         value: "isolated"
