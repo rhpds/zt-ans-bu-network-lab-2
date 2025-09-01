@@ -6,8 +6,25 @@ USER=rhel
 # --------------------------------------------------------------
 # Setup Sudoers 
 # # --------------------------------------------------------------
-# echo "%rhel ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/rhel_sudoers
-# chmod 440 /etc/sudoers.d/rhel_sudoers
+cat > /tmp/create_sudoers_user.yml << EOF
+---
+- name: Setup sudoers
+  hosts: localhost
+  become: true
+  gather_facts: false
+  vars:
+    ansible_become_password: ansible123!
+  tasks:
+    - name: Create sudo file
+      copy:
+        dest: /etc/sudoers.d/rhel_sudoers
+        content: "%rhel ALL=(ALL:ALL) NOPASSWD:ALL"
+        owner: root
+        group: root
+        mode: 0440
+EOF
+/usr/local/bin/ansible-playbook /tmp/create_sudoers_user.yml
+rm /tmp/create_sudoers_user.yml
 
 
 # --------------------------------------------------------------
