@@ -23,7 +23,7 @@ cat > /tmp/create_sudoers_user.yml << EOF
         group: root
         mode: 0440
 EOF
-/usr/local/bin/ansible-playbook /tmp/create_sudoers_user.yml
+/usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
 rm /tmp/create_sudoers_user.yml
 
 
@@ -235,7 +235,7 @@ cat >/home/rhel/facts.yml <<EOF
 EOF
 cat /home/rhel/facts.yml
 
-/usr/local/bin/ansible-playbook /home/rhel/playbook.yml
+/usr/bin/ansible-playbook /home/rhel/playbook.yml
 
 cat > /home/rhel/hosts << EOF
 cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
@@ -385,4 +385,4 @@ connect_timeout = 200
 command_timeout = 200
 EOF
 
-/usr/local/bin/ansible-playbook /home/rhel/debug.yml
+/usr/bin/ansible-playbook /home/rhel/debug.yml
