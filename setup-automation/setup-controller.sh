@@ -2,10 +2,21 @@
 
 USER=rhel
 
+systemctl stop systemd-tmpfiles-setup.service
+systemctl disable systemd-tmpfiles-setup.service
+
+## --------------------------------------------------------------
+## Install ansible collections
+## --------------------------------------------------------------
 ansible-galaxy collection install awx.awx
-# --------------------------------------------------------------
-# Setup Sudoers 
-# # --------------------------------------------------------------
+ansible-galaxy collection install ansible.eda
+ansible-galaxy collection install community.general
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install microsoft.ad
+
+## --------------------------------------------------------------
+## Create sudoers using playbook
+## --------------------------------------------------------------
 cat > /tmp/create_sudoers_user.yml << EOF
 ---
 - name: Setup sudoers
@@ -24,13 +35,12 @@ cat > /tmp/create_sudoers_user.yml << EOF
         mode: 0440
 EOF
 /usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
+# remove seetup playbook
 rm /tmp/create_sudoers_user.yml
-
 
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
-# Write a new playbook to create a template from above playbook
 cat > /home/rhel/playbook.yml << EOF
 ---
 - name: setup controller for network use cases
@@ -38,7 +48,6 @@ cat > /home/rhel/playbook.yml << EOF
   gather_facts: true
   become: true
   vars:
-
     username: admin
     admin_password: ansible123!
     login: &login
@@ -48,7 +57,6 @@ cat > /home/rhel/playbook.yml << EOF
       validate_certs: false
 
   tasks:
-
     - name: ensure tower/controller is online and working
       uri:
         url: https://localhost/api/v2/ping/
@@ -192,23 +200,9 @@ cat > /home/rhel/playbook.yml << EOF
 EOF
 cat /home/rhel/playbook.yml
 
-# Write a new playbook to create a template from above playbook
-cat > /home/rhel/debug.yml << EOF
----
-- name: print debug
-  hosts: localhost
-  gather_facts: no
-  connection: local
-
-  tasks:
-
-    - name: ensure that the desired snmp strings are present
-      ansible.builtin.debug:
-        msg: "print to terminal"
-
-EOF
-cat /home/rhel/debug.yml
-
+# --------------------------------------------------------------
+# Create facts.yml playbook
+# --------------------------------------------------------------
 cat >/home/rhel/facts.yml <<EOF
 ---
 - name: Gather information from routers
@@ -233,10 +227,36 @@ cat >/home/rhel/facts.yml <<EOF
       ansible.builtin.debug:
         var: all_facts
 EOF
-cat /home/rhel/facts.yml
-
 /usr/bin/ansible-playbook /home/rhel/playbook.yml
 
+# --------------------------------------------------------------
+# set ansible-navigator default settings
+# --------------------------------------------------------------
+cat >/home/$USER/ansible-navigator.yml <<EOL
+---
+ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+      - /home/rhel/hosts
+  execution-environment:
+    container-engine: podman
+    enabled: true
+    image: quay.io/acme_corp/network-ee
+    pull:
+      policy: never
+  logging:
+    level: debug
+  playbook-artifact:
+    save-as: /home/rhel/playbook-artifacts/{playbook_name}-artifact-{time_stamp}.json
+
+EOL
+cat /home/$USER/ansible-navigator.yml
+
+
+# --------------------------------------------------------------
+# create inventory hosts file
+# --------------------------------------------------------------
 cat > /home/rhel/hosts << EOF
 cisco ansible_connection=network_cli ansible_network_os=ios ansible_become=true ansible_user=admin ansible_password=ansible123!
 vscode ansible_user=rhel ansible_password=ansible123!
@@ -244,38 +264,24 @@ EOF
 cat  /home/rhel/hosts
 
 
-# set ansible-navigator default settings
-cat >/home/$USER/ansible-navigator.yml <<EOL
----
-ansible-navigator:
-  ansible:
-    inventories:
-    - /home/$USER/hosts
-  execution-environment:
-    container-engine: podman
-    image: ee-supported-rhel8
-    enabled: True
-    pull-policy: never
-
-  playbook-artifact:
-    save-as: /home/rhel/playbook-artifacts/{playbook_name}-artifact-{ts_utc}.json
-
-  logging:
-    level: debug
-
-EOL
-cat /home/$USER/ansible-navigator.yml
-
-# Fixes an issue with podman that produces this error: "Error: error creating tmpdir: mkdir /run/user/1000: permission denied"
+# --------------------------------------------------------------
+# set environment
+# --------------------------------------------------------------
+# fix podman issues
 loginctl enable-linger $USER
-
+# Pull network-ee latest
+su - $USER -c 'podman pull quay.io/acme_corp/network-ee'
+# Retrieve network-ee
+su - $USER -c 'podman pull quay.io/acme_corp/network-ee'
 # Creates playbook artifacts dir
 mkdir /home/$USER/playbook-artifacts
 
-# Creates playbook artifacts dir
-mkdir /home/$USER/.ssh
 
-cat >/home/rhel/.ssh/id_rsa <<EOF
+# --------------------------------------------------------------
+# configure ssh
+# --------------------------------------------------------------
+# Copy private key
+cat >/root/.ssh/private_key <<EOF
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAgEAujxd5jdqF9YOsrZQDDX7Io907po4RHXqUT/lrQyVuwEhvmvH+2W5
@@ -327,10 +333,16 @@ BkWxaD0kAvZZAAAAGmFuc2libGUtbmV0d29ya0ByZWRoYXQuY29t
 -----END OPENSSH PRIVATE KEY-----
 EOF
 
-chmod 600 /home/rhel/.ssh/id_rsa
+cat >/root/.ssh/config <<EOF
+Host *
+     StrictHostKeyChecking no
+     User ansible
+     IdentityFile /root/.ssh/private_key
+EOF
 
-# sudo chown rhel:rhel /home/rhel/.ssh/id_rsa
 
+# Creates ssh dir
+mkdir /home/$USER/.ssh
 
 tee /home/rhel/.ssh/config << EOF
 Host *
@@ -338,8 +350,9 @@ Host *
      User ansible
 EOF
 
-# sudo chown rhel:rhel /home/rhel/.ssh/config
-
+# --------------------------------------------------------------
+# create ansible.cfg
+# --------------------------------------------------------------
 tee /home/rhel/ansible.cfg << EOF
 [defaults]
 # stdout_callback = yaml
@@ -357,4 +370,10 @@ connect_timeout = 200
 command_timeout = 200
 EOF
 
-/usr/bin/ansible-playbook /home/rhel/debug.yml
+# Fix DNS on RHEL9
+echo "search $_SANDBOX_ID.svc.cluster.local." >> /etc/resolv.conf
+
+# Work with old school Cisco SSH
+update-crypto-policies --set LEGACY
+
+exit 0
