@@ -2,18 +2,6 @@
 
 USER=rhel
 
-systemctl stop systemd-tmpfiles-setup.service
-systemctl disable systemd-tmpfiles-setup.service
-
-## --------------------------------------------------------------
-## Install ansible collections
-## --------------------------------------------------------------
-ansible-galaxy collection install awx.awx
-ansible-galaxy collection install ansible.eda
-ansible-galaxy collection install community.general
-ansible-galaxy collection install ansible.windows
-ansible-galaxy collection install microsoft.ad
-
 ## --------------------------------------------------------------
 ## Create sudoers using playbook
 ## --------------------------------------------------------------
@@ -37,6 +25,22 @@ EOF
 /usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
 # remove seetup playbook
 rm /tmp/create_sudoers_user.yml
+
+## --------------------------------------------------------------
+## Manage services
+## --------------------------------------------------------------
+sudo systemctl stop systemd-tmpfiles-setup.service
+sudo systemctl disable systemd-tmpfiles-setup.service
+
+## --------------------------------------------------------------
+## Install ansible collections
+## --------------------------------------------------------------
+ansible-galaxy collection install awx.awx
+ansible-galaxy collection install ansible.eda
+ansible-galaxy collection install community.general
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install microsoft.ad
+
 
 # --------------------------------------------------------------
 # Setup lab assets
