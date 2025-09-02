@@ -26,24 +26,6 @@ cat > ${setup_env_dir}/create_sudoers_user.yml << EOF
         mode: 0440
 EOF
 /usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
-# remove seetup playbook
-# rm ${setup_env_dir}/create_sudoers_user.yml
-
-## --------------------------------------------------------------
-## Manage services
-## --------------------------------------------------------------
-# sudo systemctl stop systemd-tmpfiles-setup.service
-# sudo systemctl disable systemd-tmpfiles-setup.service
-
-## --------------------------------------------------------------
-## Install ansible collections
-## --------------------------------------------------------------
-# ansible-galaxy collection install awx.awx
-# ansible-galaxy collection install ansible.eda
-# ansible-galaxy collection install community.general
-# ansible-galaxy collection install ansible.windows
-# ansible-galaxy collection install microsoft.ad
-
 
 # --------------------------------------------------------------
 # Setup lab assets
