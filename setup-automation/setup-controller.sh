@@ -5,7 +5,10 @@ USER=rhel
 ## --------------------------------------------------------------
 ## Create sudoers using playbook
 ## --------------------------------------------------------------
-cat > /tmp/create_sudoers_user.yml << EOF
+mkdir /tmp/setup-environment/
+setup_env_dir=/tmp/setup-environment
+
+cat > ${setup_env_dir}/create_sudoers_user.yml << EOF
 ---
 - name: Setup sudoers
   hosts: localhost
@@ -24,7 +27,7 @@ cat > /tmp/create_sudoers_user.yml << EOF
 EOF
 /usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
 # remove seetup playbook
-rm /tmp/create_sudoers_user.yml
+# rm ${setup_env_dir}/create_sudoers_user.yml
 
 ## --------------------------------------------------------------
 ## Manage services
@@ -35,175 +38,175 @@ rm /tmp/create_sudoers_user.yml
 ## --------------------------------------------------------------
 ## Install ansible collections
 ## --------------------------------------------------------------
-ansible-galaxy collection install awx.awx
-ansible-galaxy collection install ansible.eda
-ansible-galaxy collection install community.general
-ansible-galaxy collection install ansible.windows
-ansible-galaxy collection install microsoft.ad
+# ansible-galaxy collection install awx.awx
+# ansible-galaxy collection install ansible.eda
+# ansible-galaxy collection install community.general
+# ansible-galaxy collection install ansible.windows
+# ansible-galaxy collection install microsoft.ad
 
 
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
-cat > /home/rhel/playbook.yml << EOF
+cat > ${setup_env_dir}/playbook.yml << EOF
 ---
-- name: setup controller for network use cases
+---
+- name: Setup Controller 
   hosts: localhost
-  gather_facts: true
-  become: true
+  connection: local
+  collections:
+    - ansible.controller
   vars:
-    username: admin
-    admin_password: ansible123!
-    login: &login
-      controller_username: "{{ username }}"
-      controller_password: "{{ admin_password }}"
-      controller_host: "https://{{ ansible_host }}"
-      validate_certs: false
-
+    aap_hostname: localhost
+    aap_username: admin
+    aap_password: ansible123!
+    aap_validate_certs: false
   tasks:
     - name: ensure tower/controller is online and working
       uri:
-        url: https://localhost/api/v2/ping/
+        url: https://{{ aap_hostname }}/api/controller/v2/ping/
         method: GET
-        user: "{{ username }}"
-        password: "{{ admin_password }}"
+        user: "{{ aap_username }}"
+        password: "{{ aap_password }}"
         validate_certs: false
         force_basic_auth: true
-      register: controller_online
-      until: controller_online is success
+      register: _r_controller_online
+      until: _r_controller_online is success
       delay: 3
       retries: 5
-
-    - name: set base url
-      awx.awx.settings:
-        name: AWX_COLLECTIONS_ENABLED
-        value: "false"
-        <<: *login
-
-    - name: Add EE to the controller instance
-      awx.awx.execution_environment:
-        name: "Network Execution Environment"
-        image: quay.io/acme_corp/network-ee
-        <<: *login
-
-    - name: create inventory
-      awx.awx.inventory:
-        name: "Network Inventory"
-        organization: "Default"
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
-      register: workshop_inventory
-      until: workshop_inventory is success
-      delay: 3
-      retries: 5
-
-    - name: Add cisco host
-      awx.awx.host:
-        name: cisco
-        description: "ios-xe csr running on GCP"
-        inventory: "Network Inventory"
-        state: present
-        <<: *login
-        variables:
-            ansible_network_os: ios
-            ansible_user: ansible
-            ansible_host: "cisco"
-            ansible_connection: network_cli
-            ansible_become: true
-            ansible_become_method: enable
-
-    - name: Add backup server host
-      awx.awx.host:
-        name: "backup-server"
-        description: "this server is where we backup network configuration"
-        inventory: "Network Inventory"
-        state: present
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
-        variables:
-            note: in production these passwords would be encrypted in vault
-            ansible_user: rhel
-            ansible_password: ansible123!
-            ansible_host: "{{ ansible_default_ipv4.address }}"
-            ansible_become_password: ansible123!
-
-    - name: Add group
-      awx.awx.group:
-        name: "network"
-        description: "Network Group"
-        inventory: "Network Inventory"
-        state: present
-        validate_certs: false      
-        hosts:
-          - cisco
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
 
     - name: Add network machine credential
-      awx.awx.credential:
+      ansible.controller.credential:
         name: "Network Credential"
         organization: "Default"
         credential_type: Machine
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"      
         inputs:
-          ssh_key_data: "{{ lookup('file', '/root/.ssh/private_key') }}"
+          username: "admin"
+          password: "ansible123!"
 
     - name: Add controller credential
-      awx.awx.credential:
+      ansible.controller.credential:
         name: "AAP controller credential"
         organization: "Default"
         credential_type: Red Hat Ansible Automation Platform
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"     
         inputs:
           host: "{{ ansible_default_ipv4.address }}"
-          password: "ansible123!"
           username: "admin"
+          password: "ansible123!"
           verify_ssl: false
 
+    - name: Add EE to the controller instance
+      ansible.controller.execution_environment:
+        name: "Network Execution Environment"
+        image: quay.io/acme_corp/network-ee
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}" 
+
     - name: Add project
-      awx.awx.project:
+      ansible.controller.project:
         name: "Network Toolkit"
         scm_url: "https://github.com/network-automation/toolkit"
         scm_type: git
         organization: "Default"
         scm_update_on_launch: False
         scm_update_cache_timeout: 60
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false  
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"
+
+    - name: create inventory
+      ansible.controller.inventory:
+        name: "Network Inventory"
+        organization: "Default"
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"     
+      register: _r_workshop_inventory
+      until: _r_workshop_inventory is success
+      delay: 3
+      retries: 5
+
+    - name: Add cisco host
+      ansible.controller.host:
+        name: cisco
+        description: "ios-xe csr running on GCP"
+        inventory: "Network Inventory"
+        state: present
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}" 
+        variables:
+            ansible_network_os: ios
+            ansible_user: admin
+            ansible_password: ansible123!
+            ansible_host: "cisco"
+            ansible_connection: network_cli
+            ansible_become: true
+            ansible_become_method: enable
+
+    - name: Add backup server host
+      ansible.controller.host:
+        name: "backup-server"
+        description: "this server is where we backup network configuration"
+        inventory: "Network Inventory"
+        state: present
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}" 
+        variables:
+            note: in production these passwords would be encrypted in vault
+            ansible_host: "{{ ansible_default_ipv4.address }}"
+            ansible_user: rhel
+            ansible_password: ansible123!
+            ansible_become_password: ansible123!
 
     - name: Add ansible-1 server host
-      awx.awx.host:
+      ansible.controller.host:
         name: "ansible-1"
         description: "this is the report server"
         inventory: "Network Inventory"
         state: present
-        controller_username: "{{ username }}"
-        controller_password: "{{ admin_password }}"
-        controller_host: "https://{{ ansible_host }}"
-        validate_certs: false      
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"      
         variables:
             note: in production these passwords would be encrypted in vault
+            ansible_host: "{{ ansible_default_ipv4.address }}"
             ansible_user: rhel
             ansible_password: ansible123!
-            ansible_host: "{{ ansible_default_ipv4.address }}"
             ansible_become_password: ansible123!
 
+    - name: Add group
+      ansible.controller.group:
+        name: "network"
+        description: "Network Group"
+        inventory: "Network Inventory"
+        state: present
+        hosts:
+          - cisco
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        controller_host: "https://{{ aap_hostname }}"
+        validate_certs: "{{ aap_validate_certs }}"
+
 EOF
-cat /home/rhel/playbook.yml
-# /usr/bin/ansible-playbook /home/rhel/playbook.yml
+cat ${setup_env_dir}/playbook.yml
+sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook ${setup_env_dir}/play.yml"
 
 # --------------------------------------------------------------
 # Create facts.yml playbook
