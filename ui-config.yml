@@ -8,10 +8,10 @@ antora:
       solveButton: false
     - name: module-01
       label: "create-network-backup-job"
-      solveButton: false
+      solveButton: true
     - name: module-02
       label: "networkreport-job"
-      solveButton: false
+      solveButton: true
 tabs:
   - name: "Ansible Automation Platform"
     url: https://controller-${guid}.${domain}/

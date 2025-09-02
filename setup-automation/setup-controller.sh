@@ -32,7 +32,6 @@ EOF
 # --------------------------------------------------------------
 cat > ${setup_env_dir}/playbook.yml << EOF
 ---
----
 - name: Setup Controller 
   hosts: localhost
   connection: local
