@@ -194,7 +194,7 @@ cat > /tmp/setup-scripts/configure-controller.yml << EOF
         validate_certs: "{{ aap_validate_certs }}"
 
 EOF
-cat /tmp/setup-scripts/playbook.yml
+cat /tmp/setup-scripts/configure-controller.yml
 sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook /tmp/setup-scripts/configure-controller.yml"
 
 # --------------------------------------------------------------
