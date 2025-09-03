@@ -8,7 +8,7 @@
         name: "{{ item }}"
         ansible_ssh_host: "{{ item }}"
         ansible_ssh_port: "{{ lookup('ansible.builtin.env', 'BASTION_PORT') }}"
-        ansible_ssh_user: "root"
+        ansible_ssh_user: "{{ lookup('ansible.builtin.env', 'BASTION_USER') }}"
         ansible_ssh_pass: "{{ lookup('ansible.builtin.env', 'BASTION_PASSWORD') }}"
         ansible_python_interpreter: /usr/libexec/platform-python
       loop:
