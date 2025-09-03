@@ -5,10 +5,10 @@ USER=rhel
 ## --------------------------------------------------------------
 ## Create sudoers using playbook
 ## --------------------------------------------------------------
-mkdir /tmp/setup-environment/
-setup_env_dir=/tmp/setup-environment
+mkdir /tmp/setup-scripts
+setup_env_dir=/tmp/setup-scripts
 
-cat > ${setup_env_dir}/create_sudoers_user.yml << EOF
+cat > /tmp/setup-scripts/create_sudoers_user.yml << EOF
 ---
 - name: Setup sudoers
   hosts: localhost
@@ -25,7 +25,7 @@ cat > ${setup_env_dir}/create_sudoers_user.yml << EOF
         group: root
         mode: 0440
 EOF
-/usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
+/usr/bin/ansible-playbook /tmp/setup-scripts/create_sudoers_user.yml
 
 ## --------------------------------------------------------------
 ## Install ansible collections
@@ -40,7 +40,7 @@ ansible-galaxy collection install containers.podman
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
-cat > ${setup_env_dir}/playbook.yml << EOF
+cat > /tmp/setup-scripts/playbook.yml << EOF
 ---
 - name: Setup Controller 
   hosts: localhost
@@ -196,8 +196,8 @@ cat > ${setup_env_dir}/playbook.yml << EOF
         validate_certs: "{{ aap_validate_certs }}"
 
 EOF
-cat ${setup_env_dir}/playbook.yml
-sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook ${setup_env_dir}/play.yml"
+cat /tmp/setup-scripts/playbook.yml
+sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook /tmp/setup-scripts/play.yml"
 
 # --------------------------------------------------------------
 # Create facts.yml playbook

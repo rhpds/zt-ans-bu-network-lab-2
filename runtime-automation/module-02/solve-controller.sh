@@ -1,9 +1,7 @@
 #!/bin/bash
 
-mkdir /tmp/setup-environment/
-setup_env_dir=/tmp/setup-environment
 
-cat > ${setup_env_dir}/solve_challenege_2.yml << EOF
+cat > /tmp/setup-scripts/solve_challenege_2.yml << EOF
 ---
 - name: Setup Controller 
   hosts: localhost
@@ -40,4 +38,4 @@ cat > ${setup_env_dir}/solve_challenege_2.yml << EOF
         controller_host: "https://{{ aap_hostname }}"
         validate_certs: "{{ aap_validate_certs }}" 
 EOF
-sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook ${setup_env_dir}/solve_challenege_2.yml"
+sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook /tmp/setup-scripts/solve_challenege_2.yml"
