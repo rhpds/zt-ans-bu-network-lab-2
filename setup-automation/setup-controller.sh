@@ -306,12 +306,6 @@ connect_timeout = 200
 command_timeout = 200
 EOF
 
-# Fix DNS on RHEL9
-sudo su - -c "cat >>/etc/resolv.conf <<EOF
-search $_SANDBOX_ID.svc.cluster.local.
-EOF
-cat /etc/resolv.conf"
-
 # Work with old school Cisco SSH
 sudo su - -c "update-crypto-policies --set LEGACY"
 
