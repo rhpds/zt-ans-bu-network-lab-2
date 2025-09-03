@@ -310,6 +310,7 @@ EOF
 sudo su - -c "cat >>/etc/resolv.conf <<EOF
 search $_SANDBOX_ID.svc.cluster.local.
 EOF
+cat /etc/resolv.conf"
 
 # Work with old school Cisco SSH
 sudo su - -c "update-crypto-policies --set LEGACY"
