@@ -27,6 +27,16 @@ cat > ${setup_env_dir}/create_sudoers_user.yml << EOF
 EOF
 /usr/bin/ansible-playbook /tmp/create_sudoers_user.yml
 
+## --------------------------------------------------------------
+## Install ansible collections
+## --------------------------------------------------------------
+ansible-galaxy collection install awx.awx
+ansible-galaxy collection install ansible.eda
+ansible-galaxy collection install community.general
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install microsoft.ad
+ansible-galaxy collection install containers.podman
+
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
