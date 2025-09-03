@@ -5,8 +5,6 @@ USER=rhel
 ## --------------------------------------------------------------
 ## Create sudoers using playbook
 ## --------------------------------------------------------------
-mkdir /tmp/setup-scripts
-setup_env_dir=/tmp/setup-scripts
 
 cat > /tmp/setup-scripts/create-sudo-user.yml << EOF
 ---
