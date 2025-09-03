@@ -8,7 +8,7 @@ USER=rhel
 mkdir /tmp/setup-scripts
 setup_env_dir=/tmp/setup-scripts
 
-cat > /tmp/setup-scripts/create_sudoers_user.yml << EOF
+cat > /tmp/setup-scripts/create-sudo-user.yml << EOF
 ---
 - name: Setup sudoers
   hosts: localhost
@@ -25,7 +25,7 @@ cat > /tmp/setup-scripts/create_sudoers_user.yml << EOF
         group: root
         mode: 0440
 EOF
-/usr/bin/ansible-playbook /tmp/setup-scripts/create_sudoers_user.yml
+/usr/bin/ansible-playbook /tmp/setup-scripts/create-sudo-user.yml
 
 ## --------------------------------------------------------------
 ## Install ansible collections
@@ -40,7 +40,7 @@ ansible-galaxy collection install containers.podman
 # --------------------------------------------------------------
 # Setup lab assets
 # --------------------------------------------------------------
-cat > /tmp/setup-scripts/playbook.yml << EOF
+cat > /tmp/setup-scripts/configure-controller.yml << EOF
 ---
 - name: Setup Controller 
   hosts: localhost
@@ -197,7 +197,7 @@ cat > /tmp/setup-scripts/playbook.yml << EOF
 
 EOF
 cat /tmp/setup-scripts/playbook.yml
-sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook /tmp/setup-scripts/play.yml"
+sudo su - -c "ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections/ansible_collections/ /usr/bin/ansible-playbook /tmp/setup-scripts/configure-controller.yml"
 
 # --------------------------------------------------------------
 # Create facts.yml playbook
