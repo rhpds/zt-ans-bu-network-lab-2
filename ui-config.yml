@@ -23,7 +23,6 @@ tabs:
   - name: "TERMINAL"
     url: /wetty_vscode
     modules:
-      - index
       - module-01
       - module-02
   - name: "code-server"
