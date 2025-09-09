@@ -105,11 +105,6 @@ For example:
 conf t
 ----
 +
-.Sample Output
-----
-Enter configuration commands, one per line.  End with CNTL/Z.
-----
-+
 [source,bash]
 ----
 router ospf 1
@@ -117,9 +112,23 @@ router ospf 1
 +
 [source,bash]
 ----
-  router-id 1.2.3.4
+router-id 1.2.3.4
 ----
-
++
+[source,bash]
+----
+end
+----
++
+[source,bash]
+----
+write memory
+----
++
+[source,bash]
+----
+exit
+----
 === Step 5 - Verify
 
 Click the End button below to verify the job executed.
