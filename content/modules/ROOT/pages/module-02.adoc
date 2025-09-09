@@ -77,12 +77,9 @@ image:https://github.com/IPvSean/pictures_for_github/blob/master/launch_job.png?
 
 === Step 2 - Open Network Report
 
-* After the Job run and completes successfully, click on the following link
+* After the Job run and completes successfully, click the *Dynamic Report* tab at the top.
 
-+
-click the *Dynamic Report* tab at the top.  Make sure to refresh the tab if you don't see any results.
-+
-To refresh click the image:https://github.com/IPvSean/pictures_for_github/blob/master/refresh.png?raw=true[Refresh] button
+// To refresh click the image:https://github.com/IPvSean/pictures_for_github/blob/master/refresh.png?raw=true[Refresh] button
 
 === Step 3 - Click around the Dynamic Report
 
