@@ -13,8 +13,11 @@ antora:
       label: "networkreport-job"
       solveButton: true
 tabs:
-  - name: "Ansible Automation Platform"
+  - name: "Automation controller WebUI"
     url: https://controller-${guid}.${domain}/
     external: false
   - name: "TERMINAL"
-    url: /wetty_controller
+    url: /wetty_vscode
+  - name: "code-server"
+    url: https://vscode-${guid}.${domain}/?folder=/home/rhel
+    external: false

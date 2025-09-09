@@ -1,6 +1,4 @@
-:lab_name: Network automation: Infrastructure visibility
-
-= image:https://github.com/network-automation/networking-icons/blob/master/switches/switch_red_small.png?raw=true[] {lab_name}
+=  {lab_name}
 
 == Overview
 
@@ -12,12 +10,12 @@ image::https://github.com/IPvSean/pictures_for_github/blob/master/infrastructure
 
 Red Hat Ansible Automation Platform allows you to quickly transform network configuration and network device state into structured data, transform that structured data into whatever output you want.  For example in this lab we will transform the output into a simple HTML webiste.  This concept is commonly referred to as **Dynamic Documentation** and can be used in many different uses cases.
 
-== Why is this important?
-
+* Why is this important?
++
 This is an excellent beginning use-case for network operators because it can add increasingly incremental value as you learn Ansible.
 
-**Infrastructure Awareness**
-  - Allows network operators to understand and audit their network
-  - Read-only and requires no production configuration change.
-  - Is highly configurable.  Once you have structured data you can transform network devices into websites, markdown files or even upload the data into an ITSM like ServiceNow.
+== Infrastructure Awareness
+* Allows network operators to understand and audit their network
+* Read-only and requires no production configuration change.
+* Is highly configurable.  Once you have structured data you can transform network devices into websites, markdown files or even upload the data into an ITSM like ServiceNow.
 

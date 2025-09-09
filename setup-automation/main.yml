@@ -13,6 +13,7 @@
         ansible_python_interpreter: /usr/libexec/platform-python
       loop:
         - controller
+        - vscode
 
 - name: Demo Playbook for the ansible-runner API
   hosts: all:!localhost
@@ -21,6 +22,9 @@
     satellite_url: "{{ lookup('ansible.builtin.env', 'SATELLITE_URL') }}"
     satellite_org: "{{ lookup('ansible.builtin.env', 'SATELLITE_ORG') }}"
     satellite_activationkey: "{{ lookup('ansible.builtin.env', 'SATELLITE_ACTIVATIONKEY') }}"
+    guid: "{{ lookup('ansible.builtin.env', 'GUID') }}"
+    domain: "{{ lookup('ansible.builtin.env', 'DOMAIN') }}"
+
   tasks:
     - name: "waiting for the port tcp/22 to be open"
       ansible.builtin.wait_for_connection:
@@ -57,6 +61,8 @@
         SATELLITE_URL: "{{ satellite_url }}"
         SATELLITE_ORG: "{{ satellite_org }}"
         SATELLITE_ACTIVATIONKEY: "{{ satellite_activationkey }}"
+        GUID: "{{ guid }}"
+        DOMAIN: "{{ domain }}"
 
     - name: Output script result
       ansible.builtin.debug:

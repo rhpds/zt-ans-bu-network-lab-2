@@ -1,37 +1,31 @@
 = Run a network report automation job
 
-== Lab 1
+Learning to run a job in automation controller
 
-*Learning to run a job in automation controller*
-
-
-=== Challenge 2 - Running the Network Automation - Report job
+== Lab 2 - Running the Network Automation - Report job
 
 This challenge will walk you through using Automation controller to execute the `Network Automation - Report` you created on the 1st challenge.
 
-=== Ansible Collections
+== Ansible Collections
 
 Ansible provides automation content in the form of collections.  An Ansible Collection contains modules, plugins and roles that a network engineer can use to build and customize their automation.
 
-If you need a quick primer on what an Ansible Collection is, please refer to this https://www.youtube.com/watch?v=WOcqhk7TdYc&t=69s[YouTube Video here].
-
+* If you need a quick primer on what an Ansible Collection is, please refer to this https://www.youtube.com/watch?v=WOcqhk7TdYc&t=69s[YouTube Video here].
++
 video::WOcqhk7TdYc[youtube, width=560, height=315]
 
 
-=== The Cisco IOS collection
+== The Cisco IOS collection
 
-For this demonstration we are going to automate against a Cisco IOS-XE router.  We need to use the Cisco IOS collection.
+* For this demonstration we are going to automate against a Cisco IOS-XE router.  We need to use the Cisco IOS collection.
++
+The FQCN (or fully qualified collection name) to use a module is: `namespace.collection.module`
 
-The FQCN (or fully qualified collection name) to use a module is:
-
-`namespace.collection.module`
-
-So for our example it is
-
-`cisco.ios.<module name>`
-
++
+So for our example it is: `cisco.ios.<module name>`
++
 The task is this simple:
-
++
 [source,yaml]
 ----
 - name: retrieve cisco facts
@@ -40,72 +34,83 @@ The task is this simple:
     gather_network_resources: ospf
 ----
 
-=== Network automation begins and ends with facts
+== Network automation begins and ends with facts
 
-Each network resource modules can retrieve facts about that particular resource.  For example if you want to retrieve VLAN information you can return a YAML or JSON data structure from Arista, Cisco or Juniper network devices.
-
+* Each network resource modules can retrieve facts about that particular resource.  For example if you want to retrieve VLAN information you can return a YAML or JSON data structure from Arista, Cisco or Juniper network devices.
++
 image::https://github.com/IPvSean/pictures_for_github/blob/master/retrieve_facts.png?raw=true[Retrieve facts]
 
-=== Data output is flexible
+== Data output is flexible
 
-Ansible Automation Platform can create customized network reports with facts.
-
+* Ansible Automation Platform can create customized network reports with facts.
++
 image::https://github.com/IPvSean/pictures_for_github/blob/master/create_report.png?raw=true[Create report]
 
-=== Lets get started
+== Lets get started
 
 That is the end of of your lab briefing!
-
-Once the lab is setup you can click the Green start button image:https://github.com/IPvSean/pictures_for_github/blob/master/start_button.png?raw=true[Start button, 100, align=left] in the bottom right corner of this window.
 
 For this exercise we are going to run the automation job on Automation controller
 
 === Login to automation controller
 
-To login to automation controller select the `Automation controller WebUI` tab at the top of your screen.
-
+* To login to automation controller select the `Automation controller WebUI` tab at the top of your screen.
++
 Login with the following credentials:
++
+[%autowidth.stretch,width=70%,cols="^.^a,^.^a"]
+|===
+| username | admin
+| password | ansible123!
+|===
 
-username: `admin`
-password: `ansible123!`
 
 === Step 1 - Execute Network Automation - Network Report Job Template
 
-* Navigate to *Job Templates* by clicking on *Templates* found under Resources on the left navigation menu. image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.png?raw=true[Job templates]
-* To execute the *Network Automation - Report* Job Template click the rocket button which incidates the launch job button: image:https://github.com/IPvSean/pictures_for_github/blob/master/launch_job.png?raw=true[Launch job]
+* In the left navigation menu, expand *Automation Execution* and then click on *Templates*.
++
+image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.png?raw=true[Job templates]
+
+* To execute the *Network Automation - Report* Job Template click the rocket button which incidates the launch job button: 
++
+image:https://github.com/IPvSean/pictures_for_github/blob/master/launch_job.png?raw=true[Launch job]
 
 === Step 2 - Open Network Report
 
-After the Job run and completes successfully, click the *Dynamic Report* tab at the top.  Make sure to refresh the tab if you don't see any results.
-
+* After the Job run and completes successfully, click the *Dynamic Report* tab at the top.  Make sure to refresh the tab if you don't see any results.
++
 To refresh click the image:https://github.com/IPvSean/pictures_for_github/blob/master/refresh.png?raw=true[Refresh] button
 
 === Step 3 - Click around the Dynamic Report
 
-This is a virtual Cisco IOS router so it only has a single physical interface on it.  Click around the network resources to expand the resource boxes and show more information.
-
+* This is a virtual Cisco IOS router so it only has a single physical interface on it.  Click around the network resources to expand the resource boxes and show more information.
++
 This report is created using very simple Jinja2 templates in conjunction with the jQuery UI Accordion tool.
 
 === Step 4 - Optional
 
-Go to the *Automation controller Terminal* tab and login to the cisco device.
-
+* Go to the *Automation controller Terminal* tab and login to the cisco device.
++
 [source,bash]
 ----
 sudo -i
+----
++
+[source,bash]
+----
 ssh cisco
 ----
 
-Configure something (your choice) and re-run the report.
-
+* Configure something (your choice) and re-run the report.
++
 For example:
-
++
 [source,bash]
 ----
 cisco-ios-csr-1731#conf t
 Enter configuration commands, one per line.  End with CNTL/Z.
 ----
-
++
 [source,bash]
 ----
 router ospf 1
@@ -114,4 +119,4 @@ router ospf 1
 
 === Step 5 - Verify
 
-Click the Green `Check` button below to verify the job executed.
+Click the End button below to verify the job executed.
