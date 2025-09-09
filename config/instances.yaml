@@ -90,6 +90,12 @@ virtualmachines:
             protocol: TCP
             targetPort: 8080
             name: vscode
+      - name: dynamic-report
+        ports:
+          - port: 8088
+            protocol: TCP
+            targetPort: 8088
+            name: dynamic-report
     routes:
       - name: vscode-8080
         host: vscode
@@ -97,6 +103,11 @@ virtualmachines:
         targetPort: 8080
         tls: true
         tls_termination: Edge
+      - name: dynamic-report
+        host: dynamic-report
+        service: dynamic-report
+        targetPort: 8088
+        tls: false
     userdata: |-
       #cloud-config
       user: rhel

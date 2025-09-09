@@ -23,6 +23,7 @@ cat > /tmp/setup-scripts/solve_challenege_1.yml << EOF
         playbook: "playbooks/network_report.yml"
         credentials:
           - "Network Credential"
+        execution_environment: "Network Execution Environment"
         state: "present"
         controller_username: "{{ aap_username }}"
         controller_password: "{{ aap_password }}"

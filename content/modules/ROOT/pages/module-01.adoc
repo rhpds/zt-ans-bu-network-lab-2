@@ -9,8 +9,8 @@ This lab will walk you through using Automation controller to create some *Dynam
 
 == Lab Diagram
 
-* The lab diagram for this demonstration is very simple.  There will be one Red Hat Enterprise Linux 8 device running automation controller.  It is directly connected to the management network for a Cisco CSR (cloud services router) running IOS-XE.
-+
+The lab diagram for this demonstration is very simple.  There will be one Red Hat Enterprise Linux 8 device running automation controller.  It is directly connected to the management network for a Cisco CSR (cloud services router) running IOS-XE.
+
 image::https://github.com/IPvSean/pictures_for_github/blob/master/lab1-topo.png?raw=true[Lab diagram, 400, align=center]
 
 == Quick Automation Victories
@@ -84,8 +84,8 @@ image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.p
 |Job Type             | Run
 |Inventory            | Network Inventory
 |Project              | Network Toolkit
-|Execution Environment| Network Execution Environment
 |Playbook             | playbooks/network_report.yml
+|Execution Environment| Network Execution Environment
 |Credentials          | Network Credential
 |===
 

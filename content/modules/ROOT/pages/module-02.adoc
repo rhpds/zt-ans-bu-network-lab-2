@@ -10,21 +10,21 @@ This challenge will walk you through using Automation controller to execute the 
 
 Ansible provides automation content in the form of collections.  An Ansible Collection contains modules, plugins and roles that a network engineer can use to build and customize their automation.
 
-* If you need a quick primer on what an Ansible Collection is, please refer to this https://www.youtube.com/watch?v=WOcqhk7TdYc&t=69s[YouTube Video here].
-+
+If you need a quick primer on what an Ansible Collection is, please refer to this https://www.youtube.com/watch?v=WOcqhk7TdYc&t=69s[YouTube Video here].
+
 video::WOcqhk7TdYc[youtube, width=560, height=315]
 
 
 == The Cisco IOS collection
 
-* For this demonstration we are going to automate against a Cisco IOS-XE router.  We need to use the Cisco IOS collection.
-+
+For this demonstration we are going to automate against a Cisco IOS-XE router.  We need to use the Cisco IOS collection.
+
 The FQCN (or fully qualified collection name) to use a module is: `namespace.collection.module`
 
-+
+
 So for our example it is: `cisco.ios.<module name>`
-+
-The task is this simple:
+
+* The task is this simple:
 +
 [source,yaml]
 ----
@@ -36,14 +36,14 @@ The task is this simple:
 
 == Network automation begins and ends with facts
 
-* Each network resource modules can retrieve facts about that particular resource.  For example if you want to retrieve VLAN information you can return a YAML or JSON data structure from Arista, Cisco or Juniper network devices.
-+
+Each network resource modules can retrieve facts about that particular resource.  For example if you want to retrieve VLAN information you can return a YAML or JSON data structure from Arista, Cisco or Juniper network devices.
+
 image::https://github.com/IPvSean/pictures_for_github/blob/master/retrieve_facts.png?raw=true[Retrieve facts]
 
 == Data output is flexible
 
-* Ansible Automation Platform can create customized network reports with facts.
-+
+Ansible Automation Platform can create customized network reports with facts.
+
 image::https://github.com/IPvSean/pictures_for_github/blob/master/create_report.png?raw=true[Create report]
 
 == Lets get started
@@ -89,12 +89,7 @@ This report is created using very simple Jinja2 templates in conjunction with th
 
 === Step 4 - Optional
 
-* Go to the *Automation controller Terminal* tab and login to the cisco device.
-+
-[source,bash]
-----
-sudo -i
-----
+* Go to the *Terminal* tab and login to the cisco device.
 +
 [source,bash]
 ----
@@ -107,13 +102,21 @@ For example:
 +
 [source,bash]
 ----
-cisco-ios-csr-1731#conf t
+conf t
+----
++
+.Sample Output
+----
 Enter configuration commands, one per line.  End with CNTL/Z.
 ----
 +
 [source,bash]
 ----
 router ospf 1
+----
++
+[source,bash]
+----
   router-id 1.2.3.4
 ----
 
