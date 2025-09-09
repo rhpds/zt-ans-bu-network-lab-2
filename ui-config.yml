@@ -27,9 +27,7 @@ tabs:
       - module-02
   - name: "code-server"
     url: https://vscode-${guid}.${domain}/?folder=/home/rhel
-    modules:
-      - module-01
-      - module-02
+    modules: []
     external: false
   - name: "Dynamic Report"
     url: http://dynamic-report-${guid}.${domain}/
