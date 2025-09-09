@@ -107,7 +107,8 @@ virtualmachines:
         host: dynamic-report
         service: dynamic-report
         targetPort: 8088
-        tls: false
+        tls: true
+        tls_termination: Edge
     userdata: |-
       #cloud-config
       user: rhel

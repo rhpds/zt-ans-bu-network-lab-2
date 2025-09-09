@@ -79,9 +79,6 @@ image:https://github.com/IPvSean/pictures_for_github/blob/master/launch_job.png?
 
 * After the Job run and completes successfully, click on the following link
 
-// http://dynamic-report-{guid}.{domain}[Test Dynamic Report, window=_blank]
-
-// http://dynamic-report-fxnrf.apps.ocpvdev01.rhdp.net[Dynamic Report, window=_blank]
 +
 click the *Dynamic Report* tab at the top.  Make sure to refresh the tab if you don't see any results.
 +
