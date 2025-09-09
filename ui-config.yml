@@ -22,5 +22,5 @@ tabs:
     url: https://vscode-${guid}.${domain}/?folder=/home/rhel
     external: false
   - name: "Dynamic Report"
-    url: https://dynamic-report-${guid}.${domain}
+    url: http://dynamic-report-${guid}.${domain}
     external: false
