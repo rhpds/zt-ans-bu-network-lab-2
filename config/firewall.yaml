@@ -10,6 +10,8 @@ ingress:
     port: 3000
   - protocol: TCP
     port: 8080
+  - protocol: TCP
+    port: 8088
 egress:
 - ports:
   - protocol: TCP
@@ -20,3 +22,5 @@ egress:
     port: 3000
   - protocol: TCP
     port: 8080
+  - protocol: TCP
+    port: 8088
