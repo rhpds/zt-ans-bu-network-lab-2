@@ -15,12 +15,25 @@ antora:
 tabs:
   - name: "Automation controller WebUI"
     url: https://controller-${guid}.${domain}/
+    modules:
+      - index
+      - module-01
+      - module-02
     external: false
   - name: "TERMINAL"
     url: /wetty_vscode
+    modules:
+      - index
+      - module-01
+      - module-02
   - name: "code-server"
     url: https://vscode-${guid}.${domain}/?folder=/home/rhel
+    modules:
+      - module-01
+      - module-02
     external: false
   - name: "Dynamic Report"
     url: http://dynamic-report-${guid}.${domain}/
     external: true
+    modules:
+      - module-02
