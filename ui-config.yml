@@ -25,10 +25,10 @@ tabs:
     modules:
       - module-01
       - module-02
-  - name: "code-server"
-    url: https://vscode-${guid}.${domain}/?folder=/home/rhel
-    modules: []
-    external: false
+  # - name: "code-server"
+  #   url: https://vscode-${guid}.${domain}/?folder=/home/rhel
+  #   modules: []
+  #   external: false
   - name: "Dynamic Report"
     url: https://dynamic-report-${guid}.${domain}/
     external: false
