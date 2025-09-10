@@ -31,6 +31,6 @@ tabs:
     external: false
   - name: "Dynamic Report"
     url: https://dynamic-report-${guid}.${domain}/
-    external: true
+    external: false
     modules:
       - module-02
