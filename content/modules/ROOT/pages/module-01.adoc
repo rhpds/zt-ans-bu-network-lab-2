@@ -66,8 +66,6 @@ Login with the following credentials:
 === Step 1 - Create an automation job
 
 * In the left navigation menu, expand *Automation Execution* and then click on *Templates*.
-+
-image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.png?raw=true[Job templates]
 
 * You will see a list of *Job Templates*.  Job templates encourage the reuse of Ansible playbook content and collaboration between teams.
 

@@ -68,8 +68,6 @@ Login with the following credentials:
 === Step 1 - Execute Network Automation - Network Report Job Template
 
 * In the left navigation menu, expand *Automation Execution* and then click on *Templates*.
-+
-image:https://github.com/IPvSean/pictures_for_github/blob/master/job_templates.png?raw=true[Job templates]
 
 * To execute the *Network Automation - Report* Job Template click the rocket button which incidates the launch job button: 
 +
