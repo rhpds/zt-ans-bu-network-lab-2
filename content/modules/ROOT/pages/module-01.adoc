@@ -39,7 +39,7 @@ Job templates also encourage the reuse of Ansible Playbook content and collabora
 
 == Challenge 1 - Creating a Network Report Job Template
 
-For this challenge exercise you are going to create a Job Template in Automation controller.  We are going to use the Network Toolkit Collection (https://github.com/network-automation/toolkit) that contains multi-vendor playbooks for creating a network report, backups, and more.
+For this challenge exercise you are going to create a Job Template in Automation controller.  We are going to use the Network Toolkit Collection (https://github.com/rhpds/summit-2026-network-automation-toolkit) that contains multi-vendor playbooks for creating a network report, backups, and more.
 
 The *credentials* (username and password), *inventory* (a single Cisco router) and *project* (the network toolkit repository listed above) are already added.  We simply need to tie them together into a simple re-usable Job Template for our organization to use.
 
