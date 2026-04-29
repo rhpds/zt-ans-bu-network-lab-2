@@ -85,7 +85,7 @@ ansible-navigator:
   execution-environment:
     container-engine: podman
     enabled: true
-    image: quay.io/acme_corp/network-ee
+    image: quay.io/rhpds/summit-2026-acme-corp-network-ee:summit-2026
     pull:
       policy: missing
   logging:

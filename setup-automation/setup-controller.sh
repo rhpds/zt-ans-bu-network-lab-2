@@ -95,7 +95,7 @@ tee > /tmp/setup-scripts/configure-controller.yml << EOF
     - name: Add EE to the controller instance
       ansible.controller.execution_environment:
         name: "Network Execution Environment"
-        image: quay.io/acme_corp/network-ee
+        image: quay.io/rhpds/summit-2026-acme-corp-network-ee:summit-2026
         controller_username: "{{ aap_username }}"
         controller_password: "{{ aap_password }}"
         controller_host: "https://{{ aap_hostname }}"
@@ -104,7 +104,7 @@ tee > /tmp/setup-scripts/configure-controller.yml << EOF
     - name: Add project
       ansible.controller.project:
         name: "Network Toolkit"
-        scm_url: "https://github.com/network-automation/toolkit"
+        scm_url: "https://github.com/rhpds/summit-2026-network-automation-toolkit"
         scm_type: git
         organization: "Default"
         scm_update_on_launch: False
